@@ -214,18 +214,32 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
 .drop-zone:hover{border-color:var(--orange);background:rgba(255,69,0,.05)}
 .drop-zone p{font-size:13px;color:var(--gray);line-height:1.5}
 .drop-zone span{color:var(--orange);font-weight:700}
-/* Preview card */
+/* ── Preview label ── */
 .preview-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:10px}
-.loyalty-card{border-radius:var(--r-md);overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.3);position:relative;background:var(--white)}
-.card-front{padding:14px;display:flex;flex-direction:column;height:100%}
-.card-logo-area{font-size:18px;font-weight:900;color:var(--text);margin-bottom:10px;min-height:32px}
-.stamps-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;flex:1;align-content:center}
-.stamp-slot{aspect-ratio:1;border-radius:7px;border:2px solid rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(0,0,0,.25)}
-.card-footer{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:var(--orange);color:var(--white);font-size:11px;font-weight:700;margin-top:auto}
-.card-back{display:flex;align-items:center;justify-content:center;background:var(--orange);position:relative;padding:20px}
-.card-logo-back{position:absolute;top:10px;left:12px;font-size:14px;font-weight:900;color:var(--white)}
-.qr-placeholder{background:var(--white);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:center}
-.qr-placeholder svg{width:100px;height:100px}
+
+/* ── Card shell ── */
+.loyalty-card{border-radius:18px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.2);position:relative;background:var(--white)}
+
+/* ── RECTO ── */
+.card-front{display:flex;flex-direction:column;height:100%}
+.card-top-stripe{height:4px;flex-shrink:0}
+.card-inner{padding:9px 12px 8px;flex:1;display:flex;flex-direction:column}
+.card-header-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px}
+.card-logo-area{font-size:13px;font-weight:900;color:var(--text);min-height:18px;line-height:1.2;max-width:65%}
+.card-fidelite-tag{font-size:6px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;padding:2px 5px;border-radius:10px;background:rgba(0,0,0,.06);color:var(--gray);white-space:nowrap;margin-top:2px}
+.stamps-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;flex:1;align-content:center;padding:4px 0}
+.stamp-slot{aspect-ratio:1;border-radius:50%;border:1.5px dashed rgba(0,0,0,.14);display:flex;align-items:center;justify-content:center;font-size:7px;color:transparent;background:rgba(0,0,0,.025);transition:all .25s}
+.stamp-slot.stamped{border-style:solid;border-color:transparent;color:var(--white);box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.card-footer{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;color:var(--white);font-size:9px;font-weight:700;flex-shrink:0;letter-spacing:.02em}
+
+/* ── VERSO ── */
+.card-back{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;height:100%;gap:5px}
+.card-back-dots{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.14) 1.5px,transparent 1.5px);background-size:12px 12px}
+.card-logo-back{position:absolute;top:8px;left:11px;font-size:9px;font-weight:900;color:rgba(255,255,255,.8);letter-spacing:.02em;z-index:1}
+.qr-box-back{background:var(--white);border-radius:7px;padding:6px;position:relative;z-index:1;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.qr-box-back svg{width:68px;height:68px;display:block}
+.card-back-hint{font-size:6.5px;font-weight:700;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.1em;position:relative;z-index:1}
+.card-back-brand{position:absolute;bottom:7px;right:10px;font-size:7px;font-weight:800;color:rgba(255,255,255,.4);letter-spacing:.05em;z-index:1}
 
 /* ==================================================
    DASHBOARD
@@ -342,16 +356,27 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
 .client-card-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:36px 20px 60px;max-width:440px;margin:0 auto;width:100%}
 .client-card-greeting{font-size:24px;font-weight:800;color:var(--text);margin-bottom:4px;text-align:center}
 .client-card-sub{font-size:14px;color:var(--gray);margin-bottom:28px;text-align:center}
-.lcc-card{background:var(--white);border-radius:var(--r-lg);box-shadow:0 8px 40px rgba(0,0,0,.12);overflow:hidden;width:100%;margin-bottom:20px}
-.lcc-header{padding:20px 24px 18px;color:var(--white)}
-.lcc-shop-name{font-size:17px;font-weight:800}
-.lcc-client-name{font-size:13px;opacity:.8;margin-top:4px}
-.lcc-body{padding:22px 24px}
-.lcc-stamps-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:14px}
-.lcc-stamps-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
-.lcc-stamp{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.lcc-stamp.filled{background:var(--orange)}
-.lcc-stamp.empty{background:var(--cream2);border:2px solid #E8E3DC}
+/* ── Client card shell ── */
+.lcc-card{background:var(--white);border-radius:24px;box-shadow:0 16px 56px rgba(0,0,0,.14),0 2px 8px rgba(0,0,0,.07);overflow:hidden;width:100%;margin-bottom:20px}
+
+/* ── Header ── */
+.lcc-header{padding:24px 24px 22px;color:var(--white);position:relative;overflow:hidden}
+.lcc-header-overlay{position:absolute;inset:0;background:linear-gradient(140deg,rgba(0,0,0,.22) 0%,transparent 55%);pointer-events:none}
+.lcc-header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:relative;z-index:1}
+.lcc-header-left{display:flex;align-items:center;gap:12px}
+.lcc-shop-icon{width:42px;height:42px;background:rgba(255,255,255,.22);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;backdrop-filter:blur(4px)}
+.lcc-shop-name{font-size:18px;font-weight:900;letter-spacing:-.01em;line-height:1.1}
+.lcc-fidelite-pill{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.9);backdrop-filter:blur(4px)}
+.lcc-client-name{font-size:14px;color:rgba(255,255,255,.75);position:relative;z-index:1;font-weight:600}
+
+/* ── Body ── */
+.lcc-body{padding:24px 24px 20px}
+.lcc-stamps-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:16px}
+.lcc-stamps-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:22px}
+.lcc-stamp{aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;transition:transform .2s,box-shadow .2s;position:relative}
+.lcc-stamp.filled{color:var(--white);box-shadow:0 4px 16px rgba(255,69,0,.45);transform:scale(1.04)}
+.lcc-stamp.filled::after{content:'';position:absolute;inset:3px;border-radius:50%;background:rgba(255,255,255,.15)}
+.lcc-stamp.empty{background:var(--cream2);border:2px dashed #D8D3CA;color:transparent}
 .progress-wrap{margin-bottom:8px}
 .progress-track{background:#EEEEE8;border-radius:20px;height:8px;overflow:hidden;margin-bottom:8px}
 .progress-fill{height:100%;background:var(--orange);border-radius:20px;transition:width .5s ease}
@@ -720,8 +745,14 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
         <div class="preview-label">Aperçu — Recto</div>
         <div class="loyalty-card" id="prev-front" style="aspect-ratio:85.6/54">
           <div class="card-front">
-            <div class="card-logo-area" id="prev-logo">LOGO</div>
-            <div class="stamps-grid" id="prev-stamps"></div>
+            <div class="card-top-stripe" id="prev-top-stripe"></div>
+            <div class="card-inner">
+              <div class="card-header-row">
+                <div class="card-logo-area" id="prev-logo">LOGO</div>
+                <div class="card-fidelite-tag" id="prev-fidelite-tag">FIDÉLITÉ</div>
+              </div>
+              <div class="stamps-grid" id="prev-stamps"></div>
+            </div>
             <div class="card-footer" id="prev-footer">
               <span id="prev-shop">Nom de l'entreprise</span>
               <span id="prev-tel">Tel</span>
@@ -733,8 +764,9 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
         <div class="preview-label">Aperçu — Verso</div>
         <div class="loyalty-card" style="aspect-ratio:85.6/54">
           <div class="card-back" id="prev-back" style="height:100%">
+            <div class="card-back-dots"></div>
             <div class="card-logo-back" id="prev-logo-back">LOGO</div>
-            <div class="qr-placeholder">
+            <div class="qr-box-back">
               <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <rect x="10" y="10" width="30" height="30" fill="none" stroke="#222" stroke-width="5"/>
                 <rect x="18" y="18" width="14" height="14" fill="#222"/>
@@ -751,6 +783,8 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
                 <rect x="74" y="74" width="8" height="8" fill="#222"/>
               </svg>
             </div>
+            <div class="card-back-hint">Scannez pour valider</div>
+            <div class="card-back-brand">MonQuartier</div>
           </div>
         </div>
       </div>
@@ -969,7 +1003,14 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
     <div class="lcc-card">
       <!-- Header coloré -->
       <div class="lcc-header" id="lcc-header" style="background:var(--orange)">
-        <div class="lcc-shop-name" id="lcc-shop-display">🥖 Boulangerie Martin</div>
+        <div class="lcc-header-overlay"></div>
+        <div class="lcc-header-top">
+          <div class="lcc-header-left">
+            <div class="lcc-shop-icon" id="lcc-shop-icon">🥖</div>
+            <div class="lcc-shop-name" id="lcc-shop-display">Boulangerie Martin</div>
+          </div>
+          <div class="lcc-fidelite-pill">Fidélité</div>
+        </div>
         <div class="lcc-client-name" id="lcc-client-display">Carte de Sophie Lambert</div>
       </div>
       <!-- Tampons -->
@@ -1225,34 +1266,55 @@ function syncHex(id) {
 /* PERSO: live preview */
 function updatePreview() {
   const name = document.getElementById('p-name').value || "Nom de l'entreprise";
-  const tel = document.getElementById('p-phone').value || 'Tel';
-  const fc = document.getElementById('c-footer').value;
-  const ft = document.getElementById('c-ftext').value;
-  const qc = document.getElementById('c-qr').value;
+  const tel  = document.getElementById('p-phone').value || 'Tel';
+  const pc   = document.getElementById('c-primary').value;
+  const fc   = document.getElementById('c-footer').value;
+  const ft   = document.getElementById('c-ftext').value;
+  const qc   = document.getElementById('c-qr').value;
+
+  // Footer
   document.getElementById('prev-shop').textContent = name;
-  document.getElementById('prev-tel').textContent = tel;
-  document.getElementById('prev-footer').style.background = fc;
-  document.getElementById('prev-footer').style.color = ft;
+  document.getElementById('prev-tel').textContent  = tel;
+  const footer = document.getElementById('prev-footer');
+  footer.style.background = fc;
+  footer.style.color = ft;
+
+  // Top stripe & tag
+  const stripe = document.getElementById('prev-top-stripe');
+  if (stripe) stripe.style.background = pc;
+  const tag = document.getElementById('prev-fidelite-tag');
+  if (tag) { tag.style.color = pc; tag.style.background = pc + '18'; }
+
+  // Verso bg
   document.getElementById('prev-back').style.background = qc;
-  const logoEl = document.getElementById('prev-logo');
+
+  // Logo
+  const logoEl   = document.getElementById('prev-logo');
   const logoBack = document.getElementById('prev-logo-back');
   if (logoUrl) {
-    logoEl.innerHTML = `<img src="${logoUrl}" style="max-height:28px;max-width:72px;object-fit:contain">`;
-    logoBack.innerHTML = `<img src="${logoUrl}" style="max-height:18px;max-width:44px;object-fit:contain">`;
+    logoEl.innerHTML   = `<img src="${logoUrl}" style="max-height:22px;max-width:70px;object-fit:contain">`;
+    logoBack.innerHTML = `<img src="${logoUrl}" style="max-height:14px;max-width:48px;object-fit:contain;opacity:.9">`;
   } else {
-    logoEl.textContent = 'LOGO';
-    logoBack.textContent = 'LOGO';
+    logoEl.textContent   = name.length > 18 ? name.slice(0,16)+'…' : name;
+    logoBack.textContent = name.length > 14 ? name.slice(0,12)+'…' : name;
   }
+
+  // Font
   document.getElementById('prev-front').style.fontFamily = selFont;
+
+  // Stamps — circles, étoile quand validé
   const grid = document.getElementById('prev-stamps');
   grid.innerHTML = '';
+  const cols = stampsN <= 5 ? stampsN : stampsN <= 10 ? 5 : stampsN <= 15 ? 5 : 5;
+  grid.style.gridTemplateColumns = `repeat(${cols},1fr)`;
   for (let i = 0; i < stampsN; i++) {
     const s = document.createElement('div');
-    s.className = 'stamp-slot';
     if (i < 2) {
-      s.style.background = '#E8E8E0';
-      s.style.border = 'none';
-      s.innerHTML = '<span style="font-size:8px;font-weight:700;color:#999">✓</span>';
+      s.className = 'stamp-slot stamped';
+      s.style.background = pc;
+      s.innerHTML = '<span style="font-size:7px;line-height:1">★</span>';
+    } else {
+      s.className = 'stamp-slot';
     }
     grid.appendChild(s);
   }
@@ -1377,11 +1439,13 @@ function joinProgram() {
   };
 
   // Personnalise la carte
-  document.getElementById('lcc-greeting').textContent     = 'Bonjour, ' + fn + ' ! 👋';
-  document.getElementById('lcc-card-sub').textContent     = 'Votre carte de fidélité — ' + shopName;
-  document.getElementById('lcc-shop-display').textContent = shopName;
+  document.getElementById('lcc-greeting').textContent       = 'Bonjour, ' + fn + ' ! 👋';
+  document.getElementById('lcc-card-sub').textContent       = 'Votre carte de fidélité — ' + shopName;
+  document.getElementById('lcc-shop-display').textContent   = shopName;
   document.getElementById('lcc-client-display').textContent = 'Carte de ' + fullName;
-  document.getElementById('lcc-header').style.background  = color;
+  document.getElementById('lcc-header').style.background    = color;
+  // Adapter la progression initiale (nouveau client = 1 tampon)
+  document.getElementById('client-progress').style.width = Math.round(1/total*100)+'%';
 
   // Nouveau client = 1 tampon (première visite)
   renderClientCard(1, total, rewards);
@@ -1406,11 +1470,19 @@ function renderClientCard(n, total, rewards) {
   if (!grid) return;
   grid.innerHTML = '';
 
-  // Grille de tampons
+  // Couleur dynamique du commerce
+  const stampColor = document.getElementById('c-primary')?.value || '#FF4500';
+
+  // Grille de tampons — cercles étoilés
   for (let i = 0; i < total; i++) {
     const s = document.createElement('div');
-    s.className = 'lcc-stamp ' + (i < n ? 'filled' : 'empty');
-    s.textContent = i < n ? '✓' : '';
+    if (i < n) {
+      s.className = 'lcc-stamp filled';
+      s.style.background = stampColor;
+      s.textContent = '★';
+    } else {
+      s.className = 'lcc-stamp empty';
+    }
     grid.appendChild(s);
   }
 
@@ -1456,11 +1528,9 @@ initClients();
 updatePreview();
 updateDashBtn();
 // Carte demo par défaut (Sophie Lambert, 8/10)
-renderClientCard(8, 10, {
-  bronze: 'Café offert',
-  silver: 'Viennoiserie offerte',
-  gold:   '-10% sur commande'
-});
+renderClientCard(8, 10, { bronze:'Café offert', silver:'Viennoiserie offerte', gold:'-10% sur commande' });
+// Appliquer la couleur orange sur la carte demo
+document.getElementById('lcc-header').style.background = '#FF4500';
 </script>
 </body>
 </html>
