@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MonQuartier — Démo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* === RESET === */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#FF4500;--orange-h:#E03D00;
+  --dark:#222220;--dark2:#2E2E2B;
+  --cream:#FAF7F2;--cream2:#F5F0E8;
+  --white:#FFFFFF;--gray:#888880;--text:#1A1A18;
+  --font:'Manrope',sans-serif;
+  --r-sm:12px;--r-md:16px;--r-lg:24px;--r-pill:50px;
+}
+html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-height:100vh;overflow-x:hidden}
+
+/* === PAGE ROUTER === */
+[data-page]{display:none}
+[data-page].active{display:block}
+
+/* === BUTTONS === */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font);font-weight:700;border:none;cursor:pointer;transition:background .2s,transform .1s;text-decoration:none}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--orange);color:var(--white);padding:14px 32px;border-radius:var(--r-pill);font-size:16px}
+.btn-primary:hover{background:var(--orange-h)}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
+.btn-secondary{background:transparent;color:var(--white);padding:13px 32px;border-radius:var(--r-pill);font-size:16px;border:2px solid var(--white)}
+.btn-secondary:hover{background:rgba(255,255,255,.1)}
+.btn-dark{background:var(--dark);color:var(--white);padding:14px 32px;border-radius:var(--r-pill);font-size:16px}
+.btn-dark:hover{background:#333330}
+.btn-outline-orange{background:transparent;color:var(--orange);padding:9px 20px;border-radius:var(--r-pill);font-size:13px;border:2px solid var(--orange)}
+.btn-outline-orange:hover{background:rgba(255,69,0,.08)}
+
+/* === LOGO === */
+.logo{font-size:22px;font-weight:800;color:var(--white);cursor:pointer;text-decoration:none}
+.logo span{color:var(--orange)}
+
+/* ==================================================
+   LANDING
+================================================== */
+#page-landing{background:var(--dark)}
+.nav-landing{display:flex;align-items:center;justify-content:space-between;padding:24px 60px;position:sticky;top:0;background:var(--dark);z-index:100}
+.nav-landing-links{display:flex;align-items:center;gap:12px}
+.hero{text-align:center;padding:100px 40px 80px;max-width:700px;margin:0 auto}
+.hero h1{font-size:60px;font-weight:900;line-height:1.1;margin-bottom:20px}
+.hero h1 em{color:var(--orange);font-style:italic}
+.hero-sub{color:var(--gray);font-size:17px;line-height:1.6;max-width:440px;margin:0 auto 40px}
+.hero-ctas{display:flex;flex-direction:column;align-items:center;gap:20px}
+.hero-arrow{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--gray);font-size:14px;cursor:pointer;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.section-label{text-align:center;color:var(--orange);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.section-how{background:var(--cream2);padding:80px 60px}
+.section-title{text-align:center;font-size:36px;font-weight:800;color:var(--text);margin-bottom:48px}
+.steps-grid{display:grid;gap:16px;max-width:600px;margin:0 auto}
+.step-card{background:var(--white);border-radius:var(--r-md);padding:24px;display:flex;align-items:flex-start;gap:20px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.step-num{width:40px;height:40px;min-width:40px;background:var(--orange);color:var(--white);border-radius:50%;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.step-card h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
+.step-card p{font-size:14px;color:var(--gray);line-height:1.5}
+.section-pricing{background:var(--dark);padding:80px 60px}
+.section-title-light{text-align:center;font-size:36px;font-weight:800;color:var(--white);margin-bottom:8px}
+.section-sub{text-align:center;color:var(--gray);font-size:15px;margin-bottom:48px}
+.pricing-grid{display:flex;justify-content:center;gap:24px;max-width:700px;margin:0 auto 24px;flex-wrap:wrap}
+.price-card{background:var(--dark2);border-radius:var(--r-lg);padding:36px 32px;width:300px;display:flex;flex-direction:column}
+.price-card.featured{background:var(--orange)}
+.price-card-name{font-size:22px;font-weight:800;margin-bottom:12px}
+.price-amount{font-size:48px;font-weight:900;line-height:1;margin-bottom:4px}
+.price-amount span{font-size:22px}
+.price-amount sub{font-size:16px;font-weight:600}
+.price-annual{font-size:13px;opacity:.7;margin-bottom:24px}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+.price-features li{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600}
+.check-circle{width:20px;height:20px;min-width:20px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:11px}
+.price-card:not(.featured) .check-circle{background:rgba(255,69,0,.15);color:var(--orange)}
+.price-sms-note{text-align:center;color:var(--gray);font-size:13px}
+
+/* ==================================================
+   AUTH
+================================================== */
+#page-auth{background:var(--dark);min-height:100vh;display:none}
+#page-auth.active{display:flex;flex-direction:column}
+.nav-auth{padding:32px 60px}
+.auth-content{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px 80px}
+.auth-card{background:var(--cream);border-radius:var(--r-lg);padding:48px 40px;width:100%;max-width:420px;color:var(--text);box-shadow:0 24px 60px rgba(0,0,0,.3)}
+.auth-card h1{font-size:28px;font-weight:800;text-align:center;margin-bottom:32px;color:var(--text)}
+.auth-tabs{display:flex;background:#E8E3DC;border-radius:var(--r-pill);padding:4px;margin-bottom:32px}
+.auth-tab{flex:1;text-align:center;padding:10px;border-radius:var(--r-pill);font-weight:700;font-size:14px;cursor:pointer;transition:background .2s,color .2s;color:var(--gray)}
+.auth-tab.active{background:var(--white);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.auth-form{display:none}
+.auth-form.active{display:flex;flex-direction:column;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:13px;font-weight:700;color:var(--text)}
+.form-input{background:var(--white);border:2px solid transparent;border-radius:var(--r-sm);padding:14px 16px;font-family:var(--font);font-size:15px;color:var(--text);outline:none;transition:border-color .2s;width:100%}
+.form-input:focus{border-color:var(--orange)}
+.forgot-link{text-align:right;font-size:13px;color:var(--orange);font-weight:600;cursor:pointer;text-decoration:none;display:block;margin-top:4px}
+.auth-footer{text-align:center;font-size:14px;color:var(--gray);margin-top:20px}
+.auth-footer a{color:var(--orange);font-weight:700;cursor:pointer;text-decoration:underline}
+
+/* ==================================================
+   TEMPLATE CHOICE
+================================================== */
+#page-template{background:var(--dark);min-height:100vh;display:none}
+#page-template.active{display:flex;flex-direction:column}
+.nav-template{padding:28px 60px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08)}
+.template-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 40px}
+.template-title{font-size:38px;font-weight:900;color:var(--white);margin-bottom:10px;text-align:center}
+.template-sub{color:var(--gray);font-size:16px;margin-bottom:52px;text-align:center}
+.template-grid{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-bottom:44px}
+.template-card{width:300px;border-radius:var(--r-lg);overflow:hidden;cursor:pointer;border:3px solid transparent;transition:border-color .25s,transform .25s,box-shadow .25s;position:relative;background:var(--dark2);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.template-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.template-card.selected{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange),0 12px 40px rgba(255,69,0,.25)}
+.template-preview{height:190px;padding:18px;display:flex;align-items:stretch}
+.template-preview-a{background:#222220;border-radius:8px;flex:1;display:flex;gap:10px;overflow:hidden}
+.tpa-sidebar{width:36px;background:var(--orange);border-radius:6px;display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:8px}
+.tpa-dot{width:18px;height:18px;background:rgba(255,255,255,.3);border-radius:4px}
+.tpa-dot.active{background:rgba(255,255,255,.9)}
+.tpa-content{flex:1;padding:10px 8px;display:flex;flex-direction:column;gap:7px;justify-content:center}
+.tpa-line{height:7px;background:rgba(255,255,255,.25);border-radius:3px}
+.tpa-line.short{width:55%}
+.tpa-line.med{width:75%}
+.tpa-line.full{width:90%}
+.tpa-stat{height:28px;background:rgba(255,255,255,.1);border-radius:6px;margin-top:4px}
+.template-preview-b{background:#FAF7F2;border-radius:8px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:14px}
+.tpb-card{width:100%;background:white;border-radius:10px;padding:12px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.tpb-accent{height:6px;background:var(--orange);border-radius:3px;width:45%;margin-bottom:8px}
+.tpb-line{height:5px;background:#EEEEE8;border-radius:3px;margin-bottom:5px}
+.tpb-line.short{width:65%}
+.tpb-line.full{width:90%}
+.template-info{padding:18px 20px 20px;background:var(--dark2)}
+.template-name{font-size:16px;font-weight:800;color:var(--white);margin-bottom:4px}
+.template-desc{font-size:13px;color:var(--gray);line-height:1.4}
+.template-check{position:absolute;top:12px;right:12px;width:26px;height:26px;background:var(--orange);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:13px;color:var(--white);font-weight:900}
+.template-card.selected .template-check{display:flex}
+#btn-template-continue{transition:opacity .2s,cursor .2s}
+
+/* ==================================================
+   CLIENT REGISTER (PWA)
+================================================== */
+#page-client-register{background:var(--cream);min-height:100vh;display:none}
+#page-client-register.active{display:flex;flex-direction:column}
+.client-banner{background:var(--orange);padding:20px 32px;display:flex;align-items:center;gap:16px}
+.client-banner-icon{width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:20px}
+.client-banner-info h2{font-size:17px;font-weight:800;color:var(--white)}
+.client-banner-info p{font-size:13px;color:rgba(255,255,255,.75)}
+.client-content{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.client-card{background:var(--white);border-radius:var(--r-lg);padding:40px 32px;width:100%;max-width:400px;box-shadow:0 8px 32px rgba(0,0,0,.08)}
+.client-card h2{font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px}
+.client-card>p{font-size:14px;color:var(--gray);margin-bottom:28px;line-height:1.5}
+.client-form{display:flex;flex-direction:column;gap:16px}
+.form-input-cream{background:var(--cream);border:2px solid transparent;border-radius:var(--r-sm);padding:14px 16px;font-family:var(--font);font-size:15px;color:var(--text);outline:none;transition:border-color .2s;width:100%}
+.form-input-cream:focus{border-color:var(--orange)}
+.legal-note{text-align:center;font-size:11px;color:#BBB;margin-top:16px;line-height:1.5}
+
+/* ==================================================
+   PERSONALIZATION
+================================================== */
+#page-perso{background:var(--dark);min-height:100vh;display:none}
+#page-perso.active{display:block}
+.nav-perso{display:flex;align-items:center;justify-content:space-between;padding:18px 48px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:var(--dark);z-index:100}
+.nav-perso-center{text-align:center}
+.nav-perso-center .sub{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);font-weight:700}
+.nav-perso-center .title{font-size:14px;font-weight:800;color:var(--white)}
+.perso-layout{display:grid;grid-template-columns:1fr 400px;min-height:calc(100vh - 65px)}
+.perso-form-col{padding:40px 48px;overflow-y:auto}
+.perso-preview-col{background:var(--dark2);padding:36px 28px;position:sticky;top:65px;height:calc(100vh - 65px);overflow-y:auto;display:flex;flex-direction:column;gap:28px}
+.perso-section{margin-bottom:36px}
+.perso-section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:18px}
+.perso-field{margin-bottom:16px}
+.perso-field label{display:block;font-size:13px;font-weight:600;color:rgba(255,255,255,.55);margin-bottom:7px}
+.perso-input{background:var(--dark2);border:1.5px solid rgba(255,255,255,.1);border-radius:var(--r-sm);padding:12px 16px;font-family:var(--font);font-size:15px;color:var(--white);outline:none;width:100%;transition:border-color .2s}
+.perso-input:focus{border-color:var(--orange)}
+.color-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.color-field label{font-size:12px;font-weight:600;color:rgba(255,255,255,.55);margin-bottom:7px;display:block}
+.color-wrap{display:flex;align-items:center;gap:10px;background:var(--dark2);border:1.5px solid rgba(255,255,255,.1);border-radius:var(--r-sm);padding:10px 14px}
+.color-wrap input[type="color"]{width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none}
+.color-hex{font-size:13px;font-weight:700;color:var(--white);font-family:monospace}
+.font-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.font-option{border:2px solid rgba(255,255,255,.1);border-radius:var(--r-sm);padding:14px 12px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.font-option.selected{border-color:var(--orange);background:rgba(255,69,0,.1)}
+.font-preview{font-size:20px;font-weight:700;margin-bottom:4px;color:var(--white)}
+.font-name{font-size:11px;color:var(--gray)}
+.stamps-row{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.stamps-row label{font-size:13px;font-weight:600;color:rgba(255,255,255,.55);white-space:nowrap}
+.stamps-counter{display:flex;align-items:center;gap:12px;background:var(--dark2);border-radius:var(--r-sm);padding:8px 16px}
+.stamps-counter button{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:var(--white);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;font-family:var(--font)}
+.stamps-counter button:hover{background:var(--orange)}
+.stamps-counter span{font-size:20px;font-weight:800;min-width:28px;text-align:center}
+.rewards-list{display:flex;flex-direction:column;gap:12px}
+.reward-row{display:flex;align-items:center;gap:12px}
+.reward-badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.rb-bronze{background:#CD7F32;color:#fff}
+.rb-silver{background:#A8A9AD;color:#fff}
+.rb-gold{background:#FFD700;color:#333}
+.perso-input-sm{flex:1;background:var(--dark2);border:1.5px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 14px;font-family:var(--font);font-size:14px;color:var(--white);outline:none}
+.perso-input-sm:focus{border-color:var(--orange)}
+.save-bar{display:flex;justify-content:flex-end;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);margin-top:8px}
+.drop-zone{border:2px dashed rgba(255,255,255,.2);border-radius:var(--r-sm);padding:28px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.drop-zone:hover{border-color:var(--orange);background:rgba(255,69,0,.05)}
+.drop-zone p{font-size:13px;color:var(--gray);line-height:1.5}
+.drop-zone span{color:var(--orange);font-weight:700}
+/* Preview card */
+.preview-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:10px}
+.loyalty-card{border-radius:var(--r-md);overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.3);position:relative;background:var(--white)}
+.card-front{padding:14px;display:flex;flex-direction:column;height:100%}
+.card-logo-area{font-size:18px;font-weight:900;color:var(--text);margin-bottom:10px;min-height:32px}
+.stamps-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;flex:1;align-content:center}
+.stamp-slot{aspect-ratio:1;border-radius:7px;border:2px solid rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(0,0,0,.25)}
+.card-footer{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:var(--orange);color:var(--white);font-size:11px;font-weight:700;margin-top:auto}
+.card-back{display:flex;align-items:center;justify-content:center;background:var(--orange);position:relative;padding:20px}
+.card-logo-back{position:absolute;top:10px;left:12px;font-size:14px;font-weight:900;color:var(--white)}
+.qr-placeholder{background:var(--white);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:center}
+.qr-placeholder svg{width:100px;height:100px}
+
+/* ==================================================
+   DASHBOARD
+================================================== */
+#page-dashboard{display:none;min-height:100vh}
+#page-dashboard.active{display:flex;flex-direction:column}
+.nav-dashboard{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:var(--white);border-bottom:1px solid #EEEEE8;position:sticky;top:0;z-index:100}
+.nav-dashboard .logo{color:var(--text)}
+.avatar-btn{width:40px;height:40px;border-radius:50%;background:var(--orange);color:var(--white);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;font-family:var(--font)}
+.dash-body{display:flex;flex:1;background:var(--cream)}
+.dash-sidebar{width:240px;min-width:240px;background:var(--orange);padding:28px 0;display:flex;flex-direction:column}
+.sidebar-greeting{padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:14px}
+.sidebar-greeting p{font-size:13px;color:rgba(255,255,255,.7)}
+.sidebar-greeting h2{font-size:17px;font-weight:800;color:var(--white);margin-top:2px}
+.sidebar-nav{display:flex;flex-direction:column;gap:2px;padding:0 12px}
+.sidebar-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:var(--r-sm);cursor:pointer;color:rgba(255,255,255,.8);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;transition:background .2s,color .2s;border:none;background:none;font-family:var(--font);width:100%;text-align:left}
+.sidebar-item:hover{background:rgba(255,255,255,.15);color:var(--white)}
+.sidebar-item.active{background:rgba(0,0,0,.2);color:var(--white)}
+.dash-content{flex:1;padding:40px 48px;overflow-y:auto}
+[data-section]{display:none}
+[data-section].active{display:block}
+.dash-page-title{font-size:26px;font-weight:800;color:var(--text);margin-bottom:28px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:28px}
+.stat-box{background:var(--white);border-radius:var(--r-md);padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.stat-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:8px}
+.stat-value{font-size:34px;font-weight:900;color:var(--text);line-height:1;margin-bottom:8px}
+.stat-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px}
+.stat-badge.up{background:#E8F5E9;color:#2E7D32}
+.stat-badge.neutral{background:#FFF3E0;color:#E65100}
+.dash-grid{display:grid;grid-template-columns:1fr 300px;gap:22px}
+.dash-card{background:var(--white);border-radius:var(--r-md);padding:26px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.dash-card-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:18px}
+.clients-table{width:100%;border-collapse:collapse}
+.clients-table th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);text-align:left;padding:7px 0;border-bottom:1px solid #EEEEE8}
+.clients-table td{padding:13px 0;border-bottom:1px solid #F5F5F0;vertical-align:middle}
+.client-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--white);flex-shrink:0}
+.client-name-cell{display:flex;align-items:center;gap:10px}
+.client-name{font-size:14px;font-weight:700;color:var(--text)}
+.stamps-dots{display:flex;gap:3px}
+.stamp-dot{width:8px;height:8px;border-radius:50%;background:#DDD}
+.stamp-dot.on{background:var(--orange)}
+.level-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}
+.lb-bronze{background:#FDF0E6;color:#CD7F32}
+.lb-silver{background:#F5F5F5;color:#6E6E6E}
+.lb-gold{background:#FFFBE6;color:#B8860B}
+.date-cell{font-size:12px;color:var(--gray)}
+.qr-panel{display:flex;flex-direction:column;align-items:center;gap:14px}
+.qr-box{width:150px;height:150px;background:var(--orange);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center}
+.qr-box svg{width:90px;height:90px}
+.qr-info{text-align:center;font-size:12px;color:var(--gray);line-height:1.5}
+.chips-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.chip{padding:6px 16px;border-radius:var(--r-pill);font-size:13px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all .2s;background:var(--white);color:var(--gray)}
+.chip.active{background:var(--orange);color:var(--white)}
+.chip:not(.active):hover{border-color:var(--orange);color:var(--orange)}
+.sms-textarea{width:100%;background:var(--cream);border:2px solid #EEEEE8;border-radius:var(--r-sm);padding:14px;font-family:var(--font);font-size:14px;color:var(--text);resize:vertical;min-height:110px;outline:none;margin:14px 0;transition:border-color .2s}
+.sms-textarea:focus{border-color:var(--orange)}
+.sms-meta{display:flex;align-items:center;justify-content:space-between}
+.sms-count{font-size:13px;color:var(--gray)}
+.sms-count strong{color:var(--text)}
+.history-table{width:100%;border-collapse:collapse}
+.history-table th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);text-align:left;padding:7px 0;border-bottom:1px solid #EEEEE8}
+.history-table td{padding:11px 0;border-bottom:1px solid #F5F5F0;font-size:13px;color:var(--text)}
+.loyalty-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+.loyalty-level-card{background:var(--cream);border-radius:var(--r-sm);padding:18px 14px;text-align:center}
+.level-icon{font-size:26px;margin-bottom:7px}
+.level-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:3px}
+.level-stamps{font-size:12px;color:var(--gray);margin-bottom:7px}
+.level-reward{font-size:13px;font-weight:700;color:var(--orange);margin-bottom:10px}
+.settings-form{max-width:480px}
+.settings-section-title{font-size:14px;font-weight:800;color:var(--text);margin:26px 0 14px;padding-top:18px;border-top:1px solid #EEEEE8}
+.settings-section-title:first-child{border-top:none;margin-top:0}
+.settings-input{width:100%;background:var(--cream);border:2px solid #EEEEE8;border-radius:var(--r-sm);padding:13px 16px;font-family:var(--font);font-size:15px;color:var(--text);outline:none;transition:border-color .2s;margin-bottom:10px}
+.settings-input:focus{border-color:var(--orange)}
+.sub-info{background:#FFF3E0;border-radius:var(--r-sm);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.sub-plan-name{font-size:17px;font-weight:800;color:var(--text)}
+.plan-tag{background:var(--orange);color:var(--white);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:8px}
+.sub-renewal{font-size:12px;color:var(--gray);margin-top:3px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.clients-count{font-size:26px;font-weight:900;color:var(--text)}
+.clients-count span{font-size:15px;font-weight:600;color:var(--gray);margin-left:5px}
+
+/* === SCANNER QR === */
+#sec-scanner{background:var(--dark);border-radius:var(--r-lg);margin:-40px -48px;padding:48px}
+.scanner-wrap{display:flex;flex-direction:column;align-items:center;max-width:480px;margin:0 auto}
+.scanner-title{font-size:24px;font-weight:800;color:var(--white);margin-bottom:10px;text-align:center}
+.scanner-sub{font-size:14px;color:var(--gray);text-align:center;margin-bottom:36px;line-height:1.6}
+.scanner-viewfinder{width:260px;height:260px;position:relative;margin-bottom:32px}
+.scanner-viewfinder-bg{width:100%;height:100%;background:#111110;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.scanner-viewfinder-bg::after{content:'';position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);animation:scanLine 2s linear infinite;top:0}
+@keyframes scanLine{0%{top:10%}100%{top:90%}}
+.scanner-cam-icon{font-size:52px;opacity:.2;position:relative;z-index:1}
+.corner{position:absolute;width:26px;height:26px;border-color:var(--orange);border-style:solid}
+.corner-tl{top:10px;left:10px;border-width:3px 0 0 3px;border-radius:3px 0 0 0}
+.corner-tr{top:10px;right:10px;border-width:3px 3px 0 0;border-radius:0 3px 0 0}
+.corner-bl{bottom:10px;left:10px;border-width:0 0 3px 3px;border-radius:0 0 0 3px}
+.corner-br{bottom:10px;right:10px;border-width:0 3px 3px 0;border-radius:0 0 3px 0}
+.scanner-divider{width:100%;border:none;border-top:1px solid rgba(255,255,255,.1);margin:28px 0;position:relative}
+.scanner-divider::after{content:'ou';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--dark);padding:0 12px;font-size:12px;color:var(--gray);font-weight:700}
+.scanner-manual{width:100%;display:flex;gap:12px}
+.scanner-manual-input{flex:1;background:var(--dark2);border:1.5px solid rgba(255,255,255,.1);border-radius:var(--r-sm);padding:14px 16px;font-family:var(--font);font-size:15px;color:var(--white);outline:none;transition:border-color .2s}
+.scanner-manual-input:focus{border-color:var(--orange)}
+.scanner-confirm{display:none;flex-direction:column;align-items:center;gap:14px;padding:28px;background:rgba(46,125,50,.15);border:1px solid rgba(46,125,50,.3);border-radius:var(--r-md);width:100%;margin-top:20px;animation:fadeUp .35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.scanner-confirm-check{width:60px;height:60px;background:#2E7D32;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;color:white}
+.scanner-confirm-msg{font-size:16px;font-weight:800;color:#4CAF50;text-align:center}
+.scanner-confirm-sub{font-size:13px;color:var(--gray);text-align:center}
+
+/* ==================================================
+   CLIENT CARD PAGE
+================================================== */
+#page-client-card{background:var(--cream);min-height:100vh;display:none}
+#page-client-card.active{display:flex;flex-direction:column}
+.nav-client-card{display:flex;align-items:center;justify-content:center;padding:18px 32px;background:var(--white);border-bottom:1px solid #EEEEE8}
+.client-card-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:36px 20px 60px;max-width:440px;margin:0 auto;width:100%}
+.client-card-greeting{font-size:24px;font-weight:800;color:var(--text);margin-bottom:4px;text-align:center}
+.client-card-sub{font-size:14px;color:var(--gray);margin-bottom:28px;text-align:center}
+.lcc-card{background:var(--white);border-radius:var(--r-lg);box-shadow:0 8px 40px rgba(0,0,0,.12);overflow:hidden;width:100%;margin-bottom:20px}
+.lcc-header{padding:20px 24px 18px;color:var(--white)}
+.lcc-shop-name{font-size:17px;font-weight:800}
+.lcc-client-name{font-size:13px;opacity:.8;margin-top:4px}
+.lcc-body{padding:22px 24px}
+.lcc-stamps-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:14px}
+.lcc-stamps-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+.lcc-stamp{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.lcc-stamp.filled{background:var(--orange)}
+.lcc-stamp.empty{background:var(--cream2);border:2px solid #E8E3DC}
+.progress-wrap{margin-bottom:8px}
+.progress-track{background:#EEEEE8;border-radius:20px;height:8px;overflow:hidden;margin-bottom:8px}
+.progress-fill{height:100%;background:var(--orange);border-radius:20px;transition:width .5s ease}
+.progress-text{font-size:12px;color:var(--gray);text-align:center;margin-bottom:18px}
+.reward-next{background:var(--cream);border-radius:var(--r-sm);padding:14px 16px;display:flex;align-items:center;gap:14px}
+.reward-next-icon{font-size:24px}
+.reward-next-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray);margin-bottom:2px}
+.reward-next-value{font-size:14px;font-weight:800;color:var(--text)}
+.lcc-level-row{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;border-top:1px solid #EEEEE8}
+.lcc-level-label{font-size:13px;color:var(--gray)}
+.lcc-level-badge{font-size:13px;font-weight:800;padding:5px 16px;border-radius:var(--r-pill)}
+.lcc-qr-section{border-top:1px solid #EEEEE8;padding:22px 24px;text-align:center}
+.lcc-qr-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:16px}
+.lcc-qr-box{width:130px;height:130px;margin:0 auto 12px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;background:var(--dark)}
+.lcc-qr-hint{font-size:12px;color:var(--gray);line-height:1.5}
+.client-card-actions{display:flex;flex-direction:column;gap:12px;width:100%;margin-top:8px}
+.pwa-banner{background:var(--dark2);border-radius:var(--r-md);padding:16px 20px;display:flex;align-items:center;gap:14px;width:100%}
+.pwa-icon{font-size:24px}
+.pwa-text{flex:1}
+.pwa-text strong{font-size:14px;font-weight:800;color:var(--white);display:block;margin-bottom:2px}
+.pwa-text span{font-size:12px;color:var(--gray)}
+</style>
+</head>
+<body>
+
+<!-- ========== LANDING ========== -->
+<div data-page="page-landing" class="active" id="page-landing">
+  <nav class="nav-landing">
+    <div class="logo" onclick="goTo('page-landing')">Mon<span>Quartier</span></div>
+    <div class="nav-landing-links">
+      <button class="btn btn-secondary" onclick="goTo('page-auth')">Connexion</button>
+      <button class="btn btn-primary" onclick="goTo('page-auth')">Démarrer gratuitement</button>
+    </div>
+  </nav>
+  <section class="hero">
+    <h1>La fidélisation<br><em>de proximité</em></h1>
+    <p class="hero-sub">QR code unique, tampons automatiques et SMS ciblés pour fidéliser vos clients — sans application à télécharger.</p>
+    <div class="hero-ctas">
+      <button class="btn btn-primary" style="font-size:18px;padding:18px 52px" onclick="goTo('page-auth')">Démarrer gratuitement</button>
+      <div class="hero-arrow" onclick="document.getElementById('section-how').scrollIntoView({behavior:'smooth'})">
+        <span>Voir comment ça marche</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
+    </div>
+  </section>
+  <section class="section-how" id="section-how">
+    <div class="section-label">Simple comme bonjour</div>
+    <h2 class="section-title">Comment ça marche ?</h2>
+    <div class="steps-grid">
+      <div class="step-card"><div class="step-num">1</div><div><h3>Vous créez votre compte</h3><p>Personnalisez votre page avec vos couleurs, votre logo et votre typographie.</p></div></div>
+      <div class="step-card"><div class="step-num">2</div><div><h3>Vous imprimez votre QR code</h3><p>Un QR code unique, fixe, à afficher en caisse. Imprimé une seule fois.</p></div></div>
+      <div class="step-card"><div class="step-num">3</div><div><h3>Le client scanne</h3><p>Il s'inscrit avec son prénom et son téléphone. Reçoit son lien unique par SMS.</p></div></div>
+      <div class="step-card"><div class="step-num">4</div><div><h3>Il revient, il gagne</h3><p>À chaque visite : +1 tampon automatique. Récompenses envoyées par SMS.</p></div></div>
+    </div>
+  </section>
+  <section class="section-pricing">
+    <div class="section-label">Tarifs</div>
+    <h2 class="section-title-light">Choisissez votre plan</h2>
+    <p class="section-sub">Sans engagement. Résiliable à tout moment.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-card-name">Starter</div>
+        <div class="price-amount"><span>39€</span><sub>/mois</sub></div>
+        <p class="price-annual">ou 390€/an — 2 mois offerts</p>
+        <ul class="price-features">
+          <li><div class="check-circle">✓</div>150 clients max</li>
+          <li><div class="check-circle">✓</div>100 SMS/mois inclus</li>
+          <li><div class="check-circle">✓</div>QR code unique</li>
+          <li><div class="check-circle">✓</div>Dashboard complet</li>
+          <li><div class="check-circle">✓</div>Personnalisation</li>
+        </ul>
+        <button class="btn btn-primary" onclick="goTo('page-auth')" style="width:100%">Commencer</button>
+      </div>
+      <div class="price-card featured">
+        <div class="price-card-name">Pro</div>
+        <div class="price-amount"><span>69€</span><sub>/mois</sub></div>
+        <p class="price-annual">ou 690€/an — 2 mois offerts</p>
+        <ul class="price-features">
+          <li><div class="check-circle">✓</div>Clients illimités</li>
+          <li><div class="check-circle">✓</div>500 SMS/mois inclus</li>
+          <li><div class="check-circle">✓</div>Tout Starter inclus</li>
+          <li><div class="check-circle">✓</div>Envois SMS ciblés Or/Argent</li>
+          <li><div class="check-circle">✓</div>Support prioritaire</li>
+        </ul>
+        <button class="btn btn-dark" onclick="goTo('page-auth')" style="width:100%">Commencer</button>
+      </div>
+    </div>
+    <p class="price-sms-note">SMS supplémentaires : 0,09€/unité</p>
+  </section>
+</div>
+
+<!-- ========== AUTH ========== -->
+<div data-page="page-auth" id="page-auth">
+  <nav class="nav-auth">
+    <div class="logo" onclick="goTo('page-landing')">Mon<span>Quartier</span></div>
+  </nav>
+  <div class="auth-content">
+    <div class="auth-card">
+      <h1 id="auth-title">Créer un compte</h1>
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="tab-register" onclick="switchAuthTab('register')">Inscription</div>
+        <div class="auth-tab" id="tab-login" onclick="switchAuthTab('login')">Connexion</div>
+      </div>
+      <!-- Inscription -->
+      <div class="auth-form active" id="form-register">
+        <div class="form-group"><label>Nom du commerce</label><input class="form-input" type="text" id="reg-shop" name="shop_name" placeholder="Ex : Boulangerie Martin"></div>
+        <div class="form-group"><label>Email</label><input class="form-input" type="email" id="reg-email" name="email" placeholder="votre@email.com"></div>
+        <div class="form-group"><label>Téléphone</label><input class="form-input" type="tel" id="reg-phone" name="phone" placeholder="+33 6 00 00 00 00"></div>
+        <div class="form-group"><label>Mot de passe</label><input class="form-input" type="password" id="reg-password" name="password" placeholder="••••••••"></div>
+        <button class="btn btn-primary" onclick="registerAccount()" style="width:100%;padding:16px;margin-top:8px">Créer mon compte →</button>
+      </div>
+      <!-- Connexion -->
+      <div class="auth-form" id="form-login">
+        <div class="form-group"><label>Email</label><input class="form-input" type="email" id="login-email" name="email" placeholder="votre@email.com"></div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input class="form-input" type="password" id="login-password" name="password" placeholder="••••••••">
+          <a class="forgot-link" href="#">Mot de passe oublié ?</a>
+        </div>
+        <button class="btn btn-primary" onclick="loginAccount()" style="width:100%;padding:16px;margin-top:8px">Se connecter →</button>
+      </div>
+      <p class="auth-footer" id="auth-footer">Déjà un compte ? <a onclick="switchAuthTab('login')">Se connecter</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TEMPLATE CHOICE ========== -->
+<div data-page="page-template" id="page-template">
+  <nav class="nav-template">
+    <div class="logo" onclick="goTo('page-landing')">Mon<span>Quartier</span></div>
+    <div style="font-size:13px;color:var(--gray);font-weight:600">Étape 1 sur 2 — Choix du template</div>
+    <div style="width:120px"></div>
+  </nav>
+  <div class="template-content">
+    <h1 class="template-title">Choisissez votre template</h1>
+    <p class="template-sub">Vous pourrez tout personnaliser à l'étape suivante.</p>
+    <div class="template-grid">
+      <!-- Template A — Sombre -->
+      <div class="template-card" id="tpl-a" onclick="selectTemplate('a')">
+        <div class="template-check">✓</div>
+        <div class="template-preview">
+          <div class="template-preview-a">
+            <div class="tpa-sidebar">
+              <div class="tpa-dot active"></div>
+              <div class="tpa-dot"></div>
+              <div class="tpa-dot"></div>
+              <div class="tpa-dot"></div>
+            </div>
+            <div class="tpa-content">
+              <div class="tpa-line short" style="height:5px;background:rgba(255,69,0,.7)"></div>
+              <div class="tpa-line full" style="margin-top:6px"></div>
+              <div class="tpa-line med"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">
+                <div class="tpa-stat"></div>
+                <div class="tpa-stat"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="template-info">
+          <div class="template-name">Template A — Sombre</div>
+          <div class="template-desc">Fond #222220 · Accents orange · Manrope · Sidebar gauche</div>
+        </div>
+      </div>
+      <!-- Template B — Clair -->
+      <div class="template-card" id="tpl-b" onclick="selectTemplate('b')">
+        <div class="template-check">✓</div>
+        <div class="template-preview">
+          <div class="template-preview-b">
+            <div class="tpb-card">
+              <div class="tpb-accent"></div>
+              <div class="tpb-line full"></div>
+              <div class="tpb-line short"></div>
+              <div class="tpb-line full" style="margin-top:6px"></div>
+            </div>
+            <div class="tpb-card" style="opacity:.6">
+              <div class="tpb-accent" style="width:30%"></div>
+              <div class="tpb-line short"></div>
+            </div>
+          </div>
+        </div>
+        <div class="template-info">
+          <div class="template-name">Template B — Clair</div>
+          <div class="template-desc">Fond #FAF7F2 · Accents orange · Georgia · Cards centrées</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="btn-template-continue" onclick="continueWithTemplate()" disabled style="font-size:16px;padding:16px 52px;opacity:.45;cursor:not-allowed">Continuer avec ce template →</button>
+  </div>
+</div>
+
+<!-- ========== CLIENT REGISTER (PWA) ========== -->
+<div data-page="page-client-register" id="page-client-register">
+  <div class="client-banner">
+    <div class="client-banner-icon">🥖</div>
+    <div class="client-banner-info"><h2>Boulangerie Martin</h2><p>Paris 11e — Programme fidélité</p></div>
+  </div>
+  <div class="client-content">
+    <div class="client-card">
+      <h2>Rejoindre le programme</h2>
+      <p>Inscrivez-vous pour recevoir votre carte de fidélité par SMS et cumuler vos tampons à chaque visite.</p>
+      <div class="client-form">
+        <input class="form-input-cream" type="text" id="client-firstname" name="first_name" placeholder="Prénom">
+        <input class="form-input-cream" type="text" id="client-lastname" name="last_name" placeholder="Nom">
+        <input class="form-input-cream" type="tel" id="client-phone" name="phone" placeholder="Téléphone (ex : 06 00 00 00 00)">
+        <button class="btn btn-primary" onclick="joinProgram()" style="width:100%;padding:16px;margin-top:6px">Rejoindre le programme →</button>
+      </div>
+      <p class="legal-note">🔒 Vos données ne seront jamais revendues.<br>Désinscription en répondant STOP au SMS reçu.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PERSONALISATION ========== -->
+<div data-page="page-perso" id="page-perso">
+  <nav class="nav-perso">
+    <div class="logo" onclick="goTo('page-landing')">Mon<span>Quartier</span></div>
+    <div class="nav-perso-center">
+      <div class="sub">Étape 2 sur 2 — Personnalisation</div>
+      <div class="title">CARTE DE FIDÉLITÉ</div>
+    </div>
+    <button class="btn btn-primary" id="btn-dash" style="font-size:13px;padding:10px 20px" onclick="tryDashboard()">Passer au Dashboard →</button>
+  </nav>
+  <div class="perso-layout">
+    <!-- Formulaire -->
+    <div class="perso-form-col">
+      <div class="perso-section">
+        <div class="perso-section-title">Informations</div>
+        <div class="perso-field"><label>Nom du commerce</label><input class="perso-input" type="text" id="p-name" name="shop_name" placeholder="Ex : Boulangerie Martin" oninput="updatePreview()"></div>
+        <div class="perso-field"><label>Téléphone affiché</label><input class="perso-input" type="tel" id="p-phone" name="phone" placeholder="01 23 45 67 89" oninput="updatePreview()"></div>
+      </div>
+      <div class="perso-section">
+        <div class="perso-section-title">Logo</div>
+        <div class="drop-zone" onclick="document.getElementById('logo-upload').click()">
+          <p>Glissez votre logo ici ou <span>cliquez pour sélectionner</span></p>
+          <p style="margin-top:8px;font-size:11px">PNG, JPG — max 2 Mo</p>
+          <input type="file" id="logo-upload" name="logo" accept="image/*" style="display:none" onchange="handleLogo(event)">
+        </div>
+      </div>
+      <div class="perso-section">
+        <div class="perso-section-title">Couleurs</div>
+        <div class="color-grid">
+          <div class="color-field"><label>Couleur principale</label><div class="color-wrap"><input type="color" id="c-primary" value="#FF4500" oninput="syncHex('primary')"><span class="color-hex" id="h-primary">#FF4500</span></div></div>
+          <div class="color-field"><label>Fond pied de carte</label><div class="color-wrap"><input type="color" id="c-footer" value="#FF4500" oninput="syncHex('footer')"><span class="color-hex" id="h-footer">#FF4500</span></div></div>
+          <div class="color-field"><label>Couleur QR code</label><div class="color-wrap"><input type="color" id="c-qr" value="#FF4500" oninput="syncHex('qr')"><span class="color-hex" id="h-qr">#FF4500</span></div></div>
+          <div class="color-field"><label>Texte pied de carte</label><div class="color-wrap"><input type="color" id="c-ftext" value="#FFFFFF" oninput="syncHex('ftext')"><span class="color-hex" id="h-ftext">#FFFFFF</span></div></div>
+        </div>
+      </div>
+      <div class="perso-section">
+        <div class="perso-section-title">Typographie</div>
+        <div class="font-options">
+          <div class="font-option selected" onclick="selectFont(this,'Manrope')"><div class="font-preview" style="font-family:Manrope">Aa</div><div class="font-name">Manrope</div></div>
+          <div class="font-option" onclick="selectFont(this,'Georgia')"><div class="font-preview" style="font-family:Georgia">Aa</div><div class="font-name">Georgia</div></div>
+          <div class="font-option" onclick="selectFont(this,'Courier New')"><div class="font-preview" style="font-family:'Courier New'">Aa</div><div class="font-name">Courier</div></div>
+          <div class="font-option" onclick="selectFont(this,'Impact')"><div class="font-preview" style="font-family:Impact">Aa</div><div class="font-name">Impact</div></div>
+        </div>
+      </div>
+      <div class="perso-section">
+        <div class="perso-section-title">Programme fidélité</div>
+        <div class="stamps-row">
+          <label>Nombre de tampons</label>
+          <div class="stamps-counter">
+            <button onclick="changeStamps(-1)">−</button>
+            <span id="stamps-n">10</span>
+            <button onclick="changeStamps(1)">+</button>
+          </div>
+        </div>
+        <div class="rewards-list">
+          <div class="reward-row"><div class="reward-badge rb-bronze">Bronze</div><input class="perso-input-sm" type="text" id="r-bronze" name="reward_bronze" value="Café offert"></div>
+          <div class="reward-row"><div class="reward-badge rb-silver">Argent</div><input class="perso-input-sm" type="text" id="r-silver" name="reward_silver" value="Viennoiserie offerte"></div>
+          <div class="reward-row"><div class="reward-badge rb-gold">Or</div><input class="perso-input-sm" type="text" id="r-gold" name="reward_gold" value="-10% sur commande"></div>
+        </div>
+        <div class="save-bar">
+          <button class="btn btn-primary" onclick="saveAndDash()" style="padding:14px 36px">Enregistrer et accéder au dashboard →</button>
+        </div>
+      </div>
+    </div>
+    <!-- Aperçu -->
+    <div class="perso-preview-col">
+      <div>
+        <div class="preview-label">Aperçu — Recto</div>
+        <div class="loyalty-card" id="prev-front" style="aspect-ratio:85.6/54">
+          <div class="card-front">
+            <div class="card-logo-area" id="prev-logo">LOGO</div>
+            <div class="stamps-grid" id="prev-stamps"></div>
+            <div class="card-footer" id="prev-footer">
+              <span id="prev-shop">Nom de l'entreprise</span>
+              <span id="prev-tel">Tel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="preview-label">Aperçu — Verso</div>
+        <div class="loyalty-card" style="aspect-ratio:85.6/54">
+          <div class="card-back" id="prev-back" style="height:100%">
+            <div class="card-logo-back" id="prev-logo-back">LOGO</div>
+            <div class="qr-placeholder">
+              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="30" height="30" fill="none" stroke="#222" stroke-width="5"/>
+                <rect x="18" y="18" width="14" height="14" fill="#222"/>
+                <rect x="60" y="10" width="30" height="30" fill="none" stroke="#222" stroke-width="5"/>
+                <rect x="68" y="18" width="14" height="14" fill="#222"/>
+                <rect x="10" y="60" width="30" height="30" fill="none" stroke="#222" stroke-width="5"/>
+                <rect x="18" y="68" width="14" height="14" fill="#222"/>
+                <rect x="46" y="46" width="8" height="8" fill="#222"/>
+                <rect x="60" y="46" width="8" height="8" fill="#222"/>
+                <rect x="74" y="46" width="8" height="8" fill="#222"/>
+                <rect x="46" y="60" width="8" height="8" fill="#222"/>
+                <rect x="60" y="60" width="8" height="8" fill="#222"/>
+                <rect x="46" y="74" width="8" height="8" fill="#222"/>
+                <rect x="74" y="74" width="8" height="8" fill="#222"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== DASHBOARD ========== -->
+<div data-page="page-dashboard" id="page-dashboard">
+  <nav class="nav-dashboard">
+    <div class="logo" onclick="goTo('page-landing')">Mon<span>Quartier</span></div>
+    <button class="avatar-btn" id="dash-avatar">BM</button>
+  </nav>
+  <div class="dash-body">
+    <aside class="dash-sidebar">
+      <div class="sidebar-greeting">
+        <p>Bonjour 👋</p>
+        <h2 id="sidebar-shop-name">Boulangerie Martin</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="sidebar-item active" data-target="sec-home" onclick="switchSection(this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Accueil
+        </button>
+        <button class="sidebar-item" data-target="sec-clients" onclick="switchSection(this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Clients
+        </button>
+        <button class="sidebar-item" data-target="sec-messages" onclick="switchSection(this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Messages
+        </button>
+        <button class="sidebar-item" data-target="sec-card" onclick="switchSection(this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Carte fidélité
+        </button>
+        <button class="sidebar-item" data-target="sec-scanner" onclick="switchSection(this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/><rect x="7" y="7" width="10" height="10" rx="1"/></svg>Scanner QR
+        </button>
+        <button class="sidebar-item" data-target="sec-settings" onclick="switchSection(this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Réglages
+        </button>
+      </nav>
+    </aside>
+
+    <main class="dash-content">
+
+      <!-- Accueil -->
+      <div data-section="sec-home" class="active" id="sec-home">
+        <h1 class="dash-page-title" id="dash-title">Bonjour, Boulangerie Martin 👋</h1>
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-label">Clients actifs</div><div class="stat-value">84</div><span class="stat-badge up">↑ +12 ce mois</span></div>
+          <div class="stat-box"><div class="stat-label">Tampons validés</div><div class="stat-value">312</div><span class="stat-badge up">↑ +48 cette sem.</span></div>
+          <div class="stat-box"><div class="stat-label">Récompenses</div><div class="stat-value">17</div><span class="stat-badge neutral">ce mois</span></div>
+          <div class="stat-box"><div class="stat-label">SMS restants</div><div class="stat-value">63</div><span class="stat-badge neutral">sur 100</span></div>
+        </div>
+        <div class="dash-grid">
+          <div class="dash-card">
+            <div class="dash-card-title">Clients récents</div>
+            <table class="clients-table"><thead><tr><th>Nom</th><th>Tampons</th><th>Niveau</th><th>Dernière visite</th></tr></thead><tbody id="recent-tbody"></tbody></table>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-title">QR Code d'accueil</div>
+            <div class="qr-panel">
+              <div class="qr-box"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="30" height="30" fill="none" stroke="white" stroke-width="5"/><rect x="18" y="18" width="14" height="14" fill="white"/><rect x="60" y="10" width="30" height="30" fill="none" stroke="white" stroke-width="5"/><rect x="68" y="18" width="14" height="14" fill="white"/><rect x="10" y="60" width="30" height="30" fill="none" stroke="white" stroke-width="5"/><rect x="18" y="68" width="14" height="14" fill="white"/><rect x="46" y="46" width="8" height="8" fill="white"/><rect x="60" y="46" width="8" height="8" fill="white"/><rect x="74" y="46" width="8" height="8" fill="white"/><rect x="46" y="60" width="8" height="8" fill="white"/><rect x="60" y="60" width="8" height="8" fill="white"/><rect x="46" y="74" width="8" height="8" fill="white"/><rect x="74" y="74" width="8" height="8" fill="white"/></svg></div>
+              <p class="qr-info">Affichez ce QR code en caisse.<br>Les clients scannent pour s'inscrire.</p>
+              <button class="btn btn-primary" style="font-size:13px;padding:10px 20px" onclick="alert('PDF téléchargé ✓')">Télécharger PDF</button>
+              <button class="btn-outline-orange btn" onclick="goTo('page-client-register')">Voir page client →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clients -->
+      <div data-section="sec-clients" id="sec-clients">
+        <div class="section-header">
+          <div class="clients-count">84<span>clients inscrits</span></div>
+        </div>
+        <div class="chips-row">
+          <div class="chip active" onclick="filterClients(this,'all')">Tous</div>
+          <div class="chip" onclick="filterClients(this,'bronze')">Bronze</div>
+          <div class="chip" onclick="filterClients(this,'silver')">Argent</div>
+          <div class="chip" onclick="filterClients(this,'gold')">Or</div>
+        </div>
+        <div class="dash-card">
+          <table class="clients-table"><thead><tr><th>Nom</th><th>Téléphone</th><th>Tampons</th><th>Niveau</th><th>Dernière visite</th></tr></thead><tbody id="all-tbody"></tbody></table>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div data-section="sec-messages" id="sec-messages">
+        <h1 class="dash-page-title">Messages SMS</h1>
+        <div class="dash-card" style="margin-bottom:20px">
+          <div class="dash-card-title">Composer un message</div>
+          <div class="chips-row" id="sms-chips">
+            <div class="chip active" onclick="setSmsTarget(this,84)">Tous (84)</div>
+            <div class="chip" onclick="setSmsTarget(this,23)">Argent (23)</div>
+            <div class="chip" onclick="setSmsTarget(this,8)">Or (8)</div>
+          </div>
+          <textarea class="sms-textarea" id="sms-text" placeholder="Votre message SMS..."></textarea>
+          <div class="sms-meta">
+            <div class="sms-count">Destinataires : <strong id="sms-rcpt">84</strong> — SMS restants : <strong>63</strong></div>
+            <button class="btn btn-primary" style="font-size:13px;padding:10px 24px" onclick="sendSms()">Envoyer →</button>
+          </div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-title">Historique</div>
+          <table class="history-table">
+            <thead><tr><th>Date</th><th>Cible</th><th>Message</th><th>Envoyés</th><th>Statut</th></tr></thead>
+            <tbody>
+              <tr><td>28 avr. 2026</td><td><span class="level-badge lb-gold">Or</span></td><td>Merci pour votre fidélité ! -10% ce week-end</td><td>8</td><td style="color:#2E7D32;font-weight:700">✓ Envoyé</td></tr>
+              <tr><td>21 avr. 2026</td><td><span class="level-badge lb-silver">Argent</span></td><td>Nouvelle gamme printemps disponible !</td><td>23</td><td style="color:#2E7D32;font-weight:700">✓ Envoyé</td></tr>
+              <tr><td>14 avr. 2026</td><td>Tous</td><td>Fermeture exceptionnelle lundi 15 avril</td><td>72</td><td style="color:#2E7D32;font-weight:700">✓ Envoyé</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Carte fidélité -->
+      <div data-section="sec-card" id="sec-card">
+        <h1 class="dash-page-title">Carte de fidélité</h1>
+        <div class="dash-grid">
+          <div class="dash-card">
+            <div class="dash-card-title">Programme actuel</div>
+            <div class="loyalty-levels">
+              <div class="loyalty-level-card">
+                <div class="level-icon">🥉</div>
+                <div class="level-title">Bronze</div>
+                <div class="level-stamps">3 tampons</div>
+                <div class="level-reward">Café offert</div>
+                <button class="btn btn-primary" style="font-size:11px;padding:6px 14px" onclick="goTo('page-perso')">Modifier</button>
+              </div>
+              <div class="loyalty-level-card">
+                <div class="level-icon">🥈</div>
+                <div class="level-title">Argent</div>
+                <div class="level-stamps">6 tampons</div>
+                <div class="level-reward">Viennoiserie offerte</div>
+                <button class="btn btn-primary" style="font-size:11px;padding:6px 14px" onclick="goTo('page-perso')">Modifier</button>
+              </div>
+              <div class="loyalty-level-card">
+                <div class="level-icon">🥇</div>
+                <div class="level-title">Or</div>
+                <div class="level-stamps">10 tampons</div>
+                <div class="level-reward">-10% sur commande</div>
+                <button class="btn btn-primary" style="font-size:11px;padding:6px 14px" onclick="goTo('page-perso')">Modifier</button>
+              </div>
+            </div>
+            <button class="btn btn-primary" style="font-size:13px;padding:10px 24px" onclick="goTo('page-perso')">Modifier la carte →</button>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-title">QR Code de la carte</div>
+            <div class="qr-panel">
+              <div class="qr-box"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="30" height="30" fill="none" stroke="white" stroke-width="5"/><rect x="18" y="18" width="14" height="14" fill="white"/><rect x="60" y="10" width="30" height="30" fill="none" stroke="white" stroke-width="5"/><rect x="68" y="18" width="14" height="14" fill="white"/><rect x="10" y="60" width="30" height="30" fill="none" stroke="white" stroke-width="5"/><rect x="18" y="68" width="14" height="14" fill="white"/><rect x="46" y="46" width="8" height="8" fill="white"/><rect x="60" y="46" width="8" height="8" fill="white"/><rect x="74" y="46" width="8" height="8" fill="white"/><rect x="46" y="60" width="8" height="8" fill="white"/><rect x="60" y="60" width="8" height="8" fill="white"/><rect x="46" y="74" width="8" height="8" fill="white"/><rect x="74" y="74" width="8" height="8" fill="white"/></svg></div>
+              <p class="qr-info">QR code personnalisé<br>de votre boutique</p>
+              <button class="btn btn-primary" style="font-size:13px;padding:10px 20px" onclick="alert('PDF téléchargé ✓')">Télécharger PDF</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scanner QR -->
+      <div data-section="sec-scanner" id="sec-scanner">
+        <div class="scanner-wrap">
+          <h1 class="scanner-title">Scanner le QR client</h1>
+          <p class="scanner-sub">Scannez le QR code du client pour valider<br>un tampon sur sa carte de fidélité.</p>
+          <div class="scanner-viewfinder">
+            <div class="scanner-viewfinder-bg">
+              <span class="scanner-cam-icon">📷</span>
+            </div>
+            <div class="corner corner-tl"></div>
+            <div class="corner corner-tr"></div>
+            <div class="corner corner-bl"></div>
+            <div class="corner corner-br"></div>
+          </div>
+          <hr class="scanner-divider">
+          <div class="scanner-manual">
+            <input class="scanner-manual-input" type="text" id="scan-code" placeholder="Entrer le code manuellement…">
+            <button class="btn btn-primary" style="white-space:nowrap;font-size:14px;padding:13px 22px" onclick="validateStamp()">Valider le tampon →</button>
+          </div>
+          <div class="scanner-confirm" id="scanner-confirm">
+            <div class="scanner-confirm-check">✓</div>
+            <div class="scanner-confirm-msg">Tampon ajouté pour Sophie L. !</div>
+            <div class="scanner-confirm-sub">8 / 10 tampons — Niveau Or</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Réglages -->
+      <div data-section="sec-settings" id="sec-settings">
+        <h1 class="dash-page-title">Réglages</h1>
+        <div class="dash-card">
+          <div class="settings-form">
+            <div class="settings-section-title">Informations du commerce</div>
+            <div class="form-group" style="margin-bottom:10px"><label style="font-size:13px;font-weight:700;color:var(--gray);display:block;margin-bottom:6px">Nom du commerce</label><input class="settings-input" type="text" id="settings-shop" name="shop_name" value="Boulangerie Martin"></div>
+            <div class="form-group" style="margin-bottom:10px"><label style="font-size:13px;font-weight:700;color:var(--gray);display:block;margin-bottom:6px">Email</label><input class="settings-input" type="email" name="email" value="martin@boulangeriermartin.fr"></div>
+            <div class="form-group" style="margin-bottom:0"><label style="font-size:13px;font-weight:700;color:var(--gray);display:block;margin-bottom:6px">Téléphone</label><input class="settings-input" type="tel" name="phone" value="01 23 45 67 89"></div>
+            <div class="settings-section-title">Abonnement</div>
+            <div class="sub-info">
+              <div><div><span class="sub-plan-name">Plan Pro</span><span class="plan-tag">ACTIF</span></div><p class="sub-renewal">Renouvellement le 30 mai 2026</p></div>
+              <button class="btn btn-primary" style="font-size:13px;padding:10px 20px">Changer de plan</button>
+            </div>
+            <div style="margin-top:26px"><button class="btn btn-primary" style="padding:14px 36px" onclick="saveSettings()">Enregistrer les modifications</button></div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ========== CARTE CLIENT (PWA) ========== -->
+<div data-page="page-client-card" id="page-client-card">
+  <nav class="nav-client-card">
+    <div class="logo" style="color:var(--text)">Mon<span>Quartier</span></div>
+  </nav>
+  <div class="client-card-body">
+    <div class="client-card-greeting">Bonjour, Sophie ! 👋</div>
+    <div class="client-card-sub">Votre carte de fidélité Boulangerie Martin</div>
+
+    <div class="lcc-card">
+      <!-- Header coloré -->
+      <div class="lcc-header" style="background:var(--orange)">
+        <div class="lcc-shop-name">🥖 Boulangerie Martin</div>
+        <div class="lcc-client-name">Carte de Sophie Lambert</div>
+      </div>
+      <!-- Tampons -->
+      <div class="lcc-body">
+        <div class="lcc-stamps-label">Vos tampons</div>
+        <div class="lcc-stamps-grid" id="client-stamps-grid"></div>
+        <!-- Progression -->
+        <div class="progress-wrap">
+          <div class="progress-track"><div class="progress-fill" id="client-progress" style="width:80%"></div></div>
+          <div class="progress-text">8 / 10 tampons — encore 2 pour la prochaine récompense</div>
+        </div>
+        <!-- Récompense en cours -->
+        <div class="reward-next">
+          <div class="reward-next-icon">⭐</div>
+          <div>
+            <div class="reward-next-label">Prochaine récompense</div>
+            <div class="reward-next-value">-10% sur votre commande</div>
+          </div>
+        </div>
+      </div>
+      <!-- Niveau -->
+      <div class="lcc-level-row">
+        <span class="lcc-level-label">Niveau actuel :</span>
+        <span class="lcc-level-badge lb-gold" style="background:#FFFBE6;color:#B8860B">🥇 Or</span>
+      </div>
+      <!-- QR personnel -->
+      <div class="lcc-qr-section">
+        <div class="lcc-qr-title">Votre QR code personnel</div>
+        <div class="lcc-qr-box">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="90" height="90">
+            <rect x="10" y="10" width="30" height="30" fill="none" stroke="white" stroke-width="5"/>
+            <rect x="18" y="18" width="14" height="14" fill="white"/>
+            <rect x="60" y="10" width="30" height="30" fill="none" stroke="white" stroke-width="5"/>
+            <rect x="68" y="18" width="14" height="14" fill="white"/>
+            <rect x="10" y="60" width="30" height="30" fill="none" stroke="white" stroke-width="5"/>
+            <rect x="18" y="68" width="14" height="14" fill="white"/>
+            <rect x="46" y="46" width="8" height="8" fill="white"/>
+            <rect x="60" y="46" width="8" height="8" fill="white"/>
+            <rect x="74" y="46" width="8" height="8" fill="white"/>
+            <rect x="46" y="60" width="8" height="8" fill="white"/>
+            <rect x="60" y="60" width="8" height="8" fill="white"/>
+            <rect x="46" y="74" width="8" height="8" fill="white"/>
+            <rect x="74" y="74" width="8" height="8" fill="white"/>
+          </svg>
+        </div>
+        <div class="lcc-qr-hint">Faites scanner ce code en caisse<br>pour valider un tampon</div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="client-card-actions">
+      <button class="btn btn-primary" style="width:100%;padding:15px" onclick="alert('Téléchargement de la carte...')">Télécharger ma carte</button>
+      <div class="pwa-banner">
+        <div class="pwa-icon">📱</div>
+        <div class="pwa-text">
+          <strong>Ajouter à l'écran d'accueil</strong>
+          <span>Accédez à votre carte sans navigateur</span>
+        </div>
+        <button class="btn btn-primary" style="font-size:12px;padding:8px 16px" onclick="alert('Appuyez sur Partager → Ajouter à l\'écran d\'accueil')">Installer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =====================================================
+   TUNNEL — onboardingStep
+   0 = non connecté
+   1 = connecté, template pas choisi
+   2 = template choisi, perso pas faite
+   3 = perso faite, dashboard accessible
+===================================================== */
+let onboardingStep = 0;
+
+const PAGE_STEPS = {
+  'page-template': 1,
+  'page-perso': 2,
+  'page-dashboard': 3
+};
+const STEP_REDIRECT = ['page-auth', 'page-template', 'page-perso', 'page-dashboard'];
+
+function goTo(id) {
+  const required = PAGE_STEPS[id];
+  if (required !== undefined && onboardingStep < required) {
+    id = STEP_REDIRECT[onboardingStep];
+  }
+  document.querySelectorAll('[data-page]').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* =====================================================
+   AUTH
+===================================================== */
+function switchAuthTab(tab) {
+  const isReg = tab === 'register';
+  document.getElementById('tab-register').classList.toggle('active', isReg);
+  document.getElementById('tab-login').classList.toggle('active', !isReg);
+  document.getElementById('form-register').classList.toggle('active', isReg);
+  document.getElementById('form-login').classList.toggle('active', !isReg);
+  document.getElementById('auth-title').textContent = isReg ? 'Créer un compte' : 'Se connecter';
+  document.getElementById('auth-footer').innerHTML = isReg
+    ? "Déjà un compte ? <a onclick=\"switchAuthTab('login')\">Se connecter</a>"
+    : "Pas encore de compte ? <a onclick=\"switchAuthTab('register')\">S'inscrire</a>";
+}
+
+function registerAccount() {
+  const shop = document.getElementById('reg-shop').value.trim() || 'Mon Commerce';
+  onboardingStep = 1;
+  updateDashboardShopName(shop);
+  updateDashBtn();
+  goTo('page-template');
+}
+
+function loginAccount() {
+  onboardingStep = 3;
+  updateDashBtn();
+  goTo('page-dashboard');
+}
+
+/* =====================================================
+   TEMPLATE CHOICE
+===================================================== */
+let selectedTemplate = null;
+
+function selectTemplate(id) {
+  selectedTemplate = id;
+  document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('tpl-' + id).classList.add('selected');
+  const btn = document.getElementById('btn-template-continue');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  btn.style.cursor = 'pointer';
+}
+
+function continueWithTemplate() {
+  if (!selectedTemplate) return;
+  onboardingStep = 2;
+  updateDashBtn();
+  goTo('page-perso');
+}
+
+/* =====================================================
+   PERSO
+===================================================== */
+function tryDashboard() {
+  if (onboardingStep < 3) {
+    const btn = document.getElementById('btn-dash');
+    btn.style.animation = 'none';
+    void btn.offsetHeight;
+    btn.textContent = 'Enregistrez d\'abord !';
+    setTimeout(() => { btn.textContent = 'Passer au Dashboard →'; }, 1800);
+    return;
+  }
+  goTo('page-dashboard');
+}
+
+function saveAndDash() {
+  const shop = document.getElementById('p-name').value.trim() || 'Mon Commerce';
+  onboardingStep = 3;
+  updateDashboardShopName(shop);
+  updateDashBtn();
+  goTo('page-dashboard');
+}
+
+function updateDashBtn() {
+  const btn = document.getElementById('btn-dash');
+  if (!btn) return;
+  const ok = onboardingStep >= 3;
+  btn.style.opacity = ok ? '1' : '0.45';
+  btn.style.cursor = ok ? 'pointer' : 'not-allowed';
+}
+
+function updateDashboardShopName(name) {
+  const sn = document.getElementById('sidebar-shop-name');
+  const dt = document.getElementById('dash-title');
+  const av = document.getElementById('dash-avatar');
+  if (sn) sn.textContent = name;
+  if (dt) dt.textContent = 'Bonjour, ' + name + ' 👋';
+  if (av) av.textContent = name.slice(0, 2).toUpperCase();
+}
+
+/* =====================================================
+   DASHBOARD SECTIONS
+===================================================== */
+function switchSection(btn) {
+  document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('[data-section]').forEach(s => s.classList.remove('active'));
+  document.getElementById(btn.dataset.target).classList.add('active');
+}
+
+/* =====================================================
+   PERSO: stamps
+===================================================== */
+let stampsN = 10;
+function changeStamps(d) {
+  stampsN = Math.min(20, Math.max(2, stampsN + d));
+  document.getElementById('stamps-n').textContent = stampsN;
+  updatePreview();
+}
+
+/* PERSO: font */
+let selFont = 'Manrope';
+function selectFont(el, f) {
+  document.querySelectorAll('.font-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selFont = f;
+  updatePreview();
+}
+
+/* PERSO: logo */
+let logoUrl = null;
+function handleLogo(e) {
+  const f = e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => { logoUrl = ev.target.result; document.querySelector('.drop-zone p').textContent = '✓ ' + f.name; updatePreview(); };
+  r.readAsDataURL(f);
+}
+
+/* PERSO: hex sync */
+function syncHex(id) {
+  document.getElementById('h-' + id).textContent = document.getElementById('c-' + id).value.toUpperCase();
+  updatePreview();
+}
+
+/* PERSO: live preview */
+function updatePreview() {
+  const name = document.getElementById('p-name').value || "Nom de l'entreprise";
+  const tel = document.getElementById('p-phone').value || 'Tel';
+  const fc = document.getElementById('c-footer').value;
+  const ft = document.getElementById('c-ftext').value;
+  const qc = document.getElementById('c-qr').value;
+  document.getElementById('prev-shop').textContent = name;
+  document.getElementById('prev-tel').textContent = tel;
+  document.getElementById('prev-footer').style.background = fc;
+  document.getElementById('prev-footer').style.color = ft;
+  document.getElementById('prev-back').style.background = qc;
+  const logoEl = document.getElementById('prev-logo');
+  const logoBack = document.getElementById('prev-logo-back');
+  if (logoUrl) {
+    logoEl.innerHTML = `<img src="${logoUrl}" style="max-height:28px;max-width:72px;object-fit:contain">`;
+    logoBack.innerHTML = `<img src="${logoUrl}" style="max-height:18px;max-width:44px;object-fit:contain">`;
+  } else {
+    logoEl.textContent = 'LOGO';
+    logoBack.textContent = 'LOGO';
+  }
+  document.getElementById('prev-front').style.fontFamily = selFont;
+  const grid = document.getElementById('prev-stamps');
+  grid.innerHTML = '';
+  for (let i = 0; i < stampsN; i++) {
+    const s = document.createElement('div');
+    s.className = 'stamp-slot';
+    if (i < 2) {
+      s.style.background = '#E8E8E0';
+      s.style.border = 'none';
+      s.innerHTML = '<span style="font-size:8px;font-weight:700;color:#999">✓</span>';
+    }
+    grid.appendChild(s);
+  }
+}
+
+/* =====================================================
+   CLIENTS DATA
+===================================================== */
+const CLIENTS = [
+  {name:'Sophie Lambert', phone:'06 __ __ 23 45', stamps:8, level:'gold',   date:"Aujourd'hui", color:'#FF6B35'},
+  {name:'Thomas Durand',  phone:'07 __ __ 89 01', stamps:5, level:'silver', date:'Hier',         color:'#4A90D9'},
+  {name:'Marie Dupont',   phone:'06 __ __ 56 78', stamps:3, level:'bronze', date:'28 avr.',      color:'#7B68EE'},
+  {name:'Pierre Martin',  phone:'07 __ __ 12 34', stamps:7, level:'gold',   date:'27 avr.',      color:'#50C878'},
+  {name:'Julie Rousseau', phone:'06 __ __ 90 12', stamps:2, level:'bronze', date:'26 avr.',      color:'#FF9500'},
+  {name:'Luc Blanc',      phone:'07 __ __ 45 67', stamps:6, level:'silver', date:'25 avr.',      color:'#FF3B9A'},
+];
+const LVL = {
+  gold:   {cls:'lb-gold',   fr:'Or'},
+  silver: {cls:'lb-silver', fr:'Argent'},
+  bronze: {cls:'lb-bronze', fr:'Bronze'}
+};
+
+function dots(n, total) {
+  return Array.from({length: total}, (_, i) => `<div class="stamp-dot${i < n ? ' on' : ''}"></div>`).join('');
+}
+
+function initClients() {
+  const recent = document.getElementById('recent-tbody');
+  const all = document.getElementById('all-tbody');
+  CLIENTS.forEach((c, i) => {
+    const lv = LVL[c.level];
+    if (i < 4) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td><div class="client-name-cell"><div class="client-avatar" style="background:${c.color}">${c.name[0]}</div><div class="client-name">${c.name}</div></div></td><td><div class="stamps-dots">${dots(c.stamps,10)}</div></td><td><span class="level-badge ${lv.cls}">${lv.fr}</span></td><td class="date-cell">${c.date}</td>`;
+      recent.appendChild(tr);
+    }
+    const tr2 = document.createElement('tr');
+    tr2.dataset.level = c.level;
+    tr2.innerHTML = `<td><div class="client-name-cell"><div class="client-avatar" style="background:${c.color}">${c.name[0]}</div><div class="client-name">${c.name}</div></div></td><td style="font-size:13px;color:var(--gray)">${c.phone}</td><td><div class="stamps-dots">${dots(c.stamps,10)}</div></td><td><span class="level-badge ${lv.cls}">${lv.fr}</span></td><td class="date-cell">${c.date}</td>`;
+    all.appendChild(tr2);
+  });
+}
+
+function filterClients(chip, level) {
+  document.querySelectorAll('#sec-clients .chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  document.querySelectorAll('#all-tbody tr').forEach(r => {
+    r.style.display = (level === 'all' || r.dataset.level === level) ? '' : 'none';
+  });
+}
+
+/* =====================================================
+   SMS
+===================================================== */
+let smsRcpt = 84;
+function setSmsTarget(chip, n) {
+  document.querySelectorAll('#sms-chips .chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  smsRcpt = n;
+  document.getElementById('sms-rcpt').textContent = n;
+}
+function sendSms() {
+  const t = document.getElementById('sms-text').value.trim();
+  if (!t) { alert('Veuillez saisir un message.'); return; }
+  alert(`SMS envoyé à ${smsRcpt} destinataire(s) ✓`);
+  document.getElementById('sms-text').value = '';
+}
+
+/* =====================================================
+   SCANNER QR
+===================================================== */
+function validateStamp() {
+  const code = document.getElementById('scan-code').value.trim();
+  if (!code) {
+    document.getElementById('scan-code').style.borderColor = 'var(--orange)';
+    document.getElementById('scan-code').placeholder = 'Entrez un code…';
+    return;
+  }
+  const confirm = document.getElementById('scanner-confirm');
+  confirm.style.display = 'flex';
+  document.getElementById('scan-code').value = '';
+  document.getElementById('scan-code').style.borderColor = '';
+  setTimeout(() => { confirm.style.display = 'none'; }, 3500);
+}
+
+/* =====================================================
+   CLIENT REGISTER
+===================================================== */
+function joinProgram() {
+  const fn = document.getElementById('client-firstname').value.trim() || 'Client';
+  goTo('page-client-card');
+}
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+function saveSettings() {
+  const name = document.getElementById('settings-shop').value.trim();
+  if (name) updateDashboardShopName(name);
+  alert('Modifications enregistrées ✓');
+}
+
+/* =====================================================
+   CLIENT CARD — init stamps
+===================================================== */
+function initClientCard() {
+  const grid = document.getElementById('client-stamps-grid');
+  if (!grid) return;
+  for (let i = 0; i < 10; i++) {
+    const s = document.createElement('div');
+    s.className = 'lcc-stamp ' + (i < 8 ? 'filled' : 'empty');
+    s.textContent = i < 8 ? '✓' : '';
+    grid.appendChild(s);
+  }
+}
+
+/* =====================================================
+   BOOT
+===================================================== */
+initClients();
+updatePreview();
+updateDashBtn();
+initClientCard();
+</script>
+</body>
+</html>
