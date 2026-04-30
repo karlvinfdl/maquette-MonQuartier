@@ -56,12 +56,23 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
 .section-label{text-align:center;color:var(--orange);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
 .section-how{background:var(--cream2);padding:80px 60px}
-.section-title{text-align:center;font-size:36px;font-weight:800;color:var(--text);margin-bottom:48px}
-.steps-grid{display:grid;gap:16px;max-width:600px;margin:0 auto}
-.step-card{background:var(--white);border-radius:var(--r-md);padding:24px;display:flex;align-items:flex-start;gap:20px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.section-title{text-align:center;font-size:36px;font-weight:800;color:var(--text);margin-bottom:32px}
+.how-tabs-row{display:flex;justify-content:center;gap:0;background:#E0DBD3;border-radius:var(--r-pill);padding:4px;max-width:360px;margin:0 auto 40px}
+.how-tab{flex:1;text-align:center;padding:11px 20px;border-radius:var(--r-pill);font-weight:700;font-size:14px;cursor:pointer;transition:background .2s,color .2s;color:var(--gray);white-space:nowrap}
+.how-tab.active{background:var(--white);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.how-panel{display:none;max-width:660px;margin:0 auto}
+.how-panel.active{display:block}
+.steps-grid{display:grid;gap:14px}
+.step-card{background:var(--white);border-radius:var(--r-md);padding:22px 24px;display:flex;align-items:flex-start;gap:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:box-shadow .2s}
+.step-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.1)}
 .step-num{width:40px;height:40px;min-width:40px;background:var(--orange);color:var(--white);border-radius:50%;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center}
-.step-card h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
-.step-card p{font-size:14px;color:var(--gray);line-height:1.5}
+.step-card h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px}
+.step-card p{font-size:14px;color:var(--gray);line-height:1.55}
+.step-icon{font-size:17px;margin-right:4px}
+.step-demo-link{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:12px;font-weight:700;color:var(--orange);cursor:pointer;background:rgba(255,69,0,.07);border-radius:20px;padding:4px 10px;transition:background .2s}
+.step-demo-link:hover{background:rgba(255,69,0,.15)}
+.how-cta{text-align:center;margin-top:32px}
+.how-note{font-size:13px;color:var(--gray);margin-top:10px}
 .section-pricing{background:var(--dark);padding:80px 60px}
 .section-title-light{text-align:center;font-size:36px;font-weight:800;color:var(--white);margin-bottom:8px}
 .section-sub{text-align:center;color:var(--gray);font-size:15px;margin-bottom:48px}
@@ -389,12 +400,95 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
   <section class="section-how" id="section-how">
     <div class="section-label">Simple comme bonjour</div>
     <h2 class="section-title">Comment ça marche ?</h2>
-    <div class="steps-grid">
-      <div class="step-card"><div class="step-num">1</div><div><h3>Vous créez votre compte</h3><p>Personnalisez votre page avec vos couleurs, votre logo et votre typographie.</p></div></div>
-      <div class="step-card"><div class="step-num">2</div><div><h3>Vous imprimez votre QR code</h3><p>Un QR code unique, fixe, à afficher en caisse. Imprimé une seule fois.</p></div></div>
-      <div class="step-card"><div class="step-num">3</div><div><h3>Le client scanne</h3><p>Il s'inscrit avec son prénom et son téléphone. Reçoit son lien unique par SMS.</p></div></div>
-      <div class="step-card"><div class="step-num">4</div><div><h3>Il revient, il gagne</h3><p>À chaque visite : +1 tampon automatique. Récompenses envoyées par SMS.</p></div></div>
+
+    <!-- Onglets -->
+    <div class="how-tabs-row">
+      <div class="how-tab active" id="how-tab-merchant" onclick="switchHow('merchant')">🏪 Commerçant</div>
+      <div class="how-tab" id="how-tab-client" onclick="switchHow('client')">👤 Client</div>
     </div>
+
+    <!-- Panneau commerçant -->
+    <div class="how-panel active" id="how-merchant">
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div>
+            <h3><span class="step-icon">🔐</span>Vous créez votre compte</h3>
+            <p>Inscrivez-vous avec le nom de votre commerce, votre email et un mot de passe. 30 secondes, c'est tout.</p>
+            <span class="step-demo-link" onclick="goTo('page-auth')">▶ Essayer l'inscription</span>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div>
+            <h3><span class="step-icon">🎨</span>Vous choisissez votre template</h3>
+            <p>Template sombre (sidebar orange) ou clair (cards centréees) — vous choisissez le style de votre espace fidélité.</p>
+            <span class="step-demo-link" onclick="demoTemplate()">▶ Voir les templates</span>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div>
+            <h3><span class="step-icon">✏️</span>Vous personnalisez votre carte</h3>
+            <p>Logo, couleurs, typographie, nombre de tampons, récompenses Bronze / Argent / Or — aperçu en temps réel recto et verso.</p>
+            <span class="step-demo-link" onclick="demoPerso()">▶ Voir la personnalisation</span>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div>
+            <h3><span class="step-icon">📊</span>Vous pilotez depuis le dashboard</h3>
+            <p>Suivez vos clients par niveau, scannez les QR codes en caisse pour valider les tampons, envoyez des SMS ciblés à vos clients Or ou Argent.</p>
+            <span class="step-demo-link" onclick="demoLogin()">▶ Voir le dashboard</span>
+          </div>
+        </div>
+      </div>
+      <div class="how-cta">
+        <button class="btn btn-primary" style="font-size:15px;padding:14px 40px" onclick="goTo('page-auth')">Créer mon compte gratuitement</button>
+        <p class="how-note">Sans carte bancaire · Sans engagement</p>
+      </div>
+    </div>
+
+    <!-- Panneau client -->
+    <div class="how-panel" id="how-client">
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div>
+            <h3><span class="step-icon">📷</span>Il scanne le QR code en caisse</h3>
+            <p>Un seul QR code, fixe, imprimé une fois et affiché en caisse. Aucune application à télécharger, ça marche sur tous les smartphones.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div>
+            <h3><span class="step-icon">✍️</span>Il s'inscrit en 10 secondes</h3>
+            <p>Prénom, nom, téléphone — et c'est tout. Il reçoit immédiatement un SMS avec le lien direct vers sa carte de fidélité personnelle.</p>
+            <span class="step-demo-link" onclick="showClientRegisterPage()">▶ Voir le formulaire client</span>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div>
+            <h3><span class="step-icon">🔖</span>Il cumule des tampons à chaque visite</h3>
+            <p>À chaque passage en caisse, le commerçant scanne son QR code personnel : +1 tampon instantané. Plus de carte papier à perdre ou à oublier.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div>
+            <h3><span class="step-icon">🎁</span>Il débloque ses récompenses par SMS</h3>
+            <p>Bronze, Argent, Or — chaque palier déclenche automatiquement un SMS de récompense. Sa carte affiche son niveau et sa progression en temps réel.</p>
+            <span class="step-demo-link" onclick="showClientRegisterPage()">▶ Voir la carte client</span>
+          </div>
+        </div>
+      </div>
+      <div class="how-cta">
+        <button class="btn btn-primary" style="font-size:15px;padding:14px 40px" onclick="goTo('page-auth')">Démarrer gratuitement</button>
+        <p class="how-note">Vos clients reçoivent leur carte par SMS · Aucune app à télécharger</p>
+      </div>
+    </div>
+
   </section>
   <section class="section-pricing">
     <div class="section-label">Tarifs</div>
@@ -966,6 +1060,30 @@ function goTo(id) {
   const el = document.getElementById(id);
   if (el) el.classList.add('active');
   window.scrollTo(0, 0);
+}
+
+/* =====================================================
+   LANDING — "Comment ça marche ?" onglets
+===================================================== */
+function switchHow(tab) {
+  ['merchant','client'].forEach(t => {
+    document.getElementById('how-tab-' + t).classList.toggle('active', t === tab);
+    document.getElementById('how-' + t).classList.toggle('active', t === tab);
+  });
+}
+
+function demoTemplate() {
+  onboardingStep = 1;
+  updateDashBtn();
+  goTo('page-template');
+}
+function demoPerso() {
+  onboardingStep = 2;
+  updateDashBtn();
+  goTo('page-perso');
+}
+function demoLogin() {
+  loginAccount();
 }
 
 /* =====================================================
