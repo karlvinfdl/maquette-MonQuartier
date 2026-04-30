@@ -534,9 +534,12 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
 
 <!-- ========== CLIENT REGISTER (PWA) ========== -->
 <div data-page="page-client-register" id="page-client-register">
-  <div class="client-banner">
-    <div class="client-banner-icon">🥖</div>
-    <div class="client-banner-info"><h2>Boulangerie Martin</h2><p>Paris 11e — Programme fidélité</p></div>
+  <div class="client-banner" id="client-banner">
+    <div class="client-banner-icon" id="client-banner-icon">🥖</div>
+    <div class="client-banner-info">
+      <h2 id="client-banner-shop">Boulangerie Martin</h2>
+      <p>Programme de fidélité</p>
+    </div>
   </div>
   <div class="client-content">
     <div class="client-card">
@@ -717,7 +720,7 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
               <div class="qr-box"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="30" height="30" fill="none" stroke="white" stroke-width="5"/><rect x="18" y="18" width="14" height="14" fill="white"/><rect x="60" y="10" width="30" height="30" fill="none" stroke="white" stroke-width="5"/><rect x="68" y="18" width="14" height="14" fill="white"/><rect x="10" y="60" width="30" height="30" fill="none" stroke="white" stroke-width="5"/><rect x="18" y="68" width="14" height="14" fill="white"/><rect x="46" y="46" width="8" height="8" fill="white"/><rect x="60" y="46" width="8" height="8" fill="white"/><rect x="74" y="46" width="8" height="8" fill="white"/><rect x="46" y="60" width="8" height="8" fill="white"/><rect x="60" y="60" width="8" height="8" fill="white"/><rect x="46" y="74" width="8" height="8" fill="white"/><rect x="74" y="74" width="8" height="8" fill="white"/></svg></div>
               <p class="qr-info">Affichez ce QR code en caisse.<br>Les clients scannent pour s'inscrire.</p>
               <button class="btn btn-primary" style="font-size:13px;padding:10px 20px" onclick="alert('PDF téléchargé ✓')">Télécharger PDF</button>
-              <button class="btn-outline-orange btn" onclick="goTo('page-client-register')">Voir page client →</button>
+              <button class="btn-outline-orange btn" onclick="showClientRegisterPage()">Voir page client →</button>
             </div>
           </div>
         </div>
@@ -866,14 +869,14 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
     <div class="logo" style="color:var(--text)">Mon<span>Quartier</span></div>
   </nav>
   <div class="client-card-body">
-    <div class="client-card-greeting">Bonjour, Sophie ! 👋</div>
-    <div class="client-card-sub">Votre carte de fidélité Boulangerie Martin</div>
+    <div class="client-card-greeting" id="lcc-greeting">Bonjour, Sophie ! 👋</div>
+    <div class="client-card-sub" id="lcc-card-sub">Votre carte de fidélité Boulangerie Martin</div>
 
     <div class="lcc-card">
       <!-- Header coloré -->
-      <div class="lcc-header" style="background:var(--orange)">
-        <div class="lcc-shop-name">🥖 Boulangerie Martin</div>
-        <div class="lcc-client-name">Carte de Sophie Lambert</div>
+      <div class="lcc-header" id="lcc-header" style="background:var(--orange)">
+        <div class="lcc-shop-name" id="lcc-shop-display">🥖 Boulangerie Martin</div>
+        <div class="lcc-client-name" id="lcc-client-display">Carte de Sophie Lambert</div>
       </div>
       <!-- Tampons -->
       <div class="lcc-body">
@@ -882,21 +885,21 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
         <!-- Progression -->
         <div class="progress-wrap">
           <div class="progress-track"><div class="progress-fill" id="client-progress" style="width:80%"></div></div>
-          <div class="progress-text">8 / 10 tampons — encore 2 pour la prochaine récompense</div>
+          <div class="progress-text" id="lcc-progress-text">8 / 10 tampons — encore 2 pour la prochaine récompense</div>
         </div>
         <!-- Récompense en cours -->
         <div class="reward-next">
           <div class="reward-next-icon">⭐</div>
           <div>
             <div class="reward-next-label">Prochaine récompense</div>
-            <div class="reward-next-value">-10% sur votre commande</div>
+            <div class="reward-next-value" id="lcc-reward-value">Café offert</div>
           </div>
         </div>
       </div>
       <!-- Niveau -->
       <div class="lcc-level-row">
         <span class="lcc-level-label">Niveau actuel :</span>
-        <span class="lcc-level-badge lb-gold" style="background:#FFFBE6;color:#B8860B">🥇 Or</span>
+        <span class="lcc-level-badge" id="lcc-level-badge" style="background:#FDF0E6;color:#CD7F32">🥉 Bronze</span>
       </div>
       <!-- QR personnel -->
       <div class="lcc-qr-section">
@@ -1220,8 +1223,51 @@ function validateStamp() {
 /* =====================================================
    CLIENT REGISTER
 ===================================================== */
+function showClientRegisterPage() {
+  const shopName = document.getElementById('p-name')?.value.trim()
+    || document.getElementById('sidebar-shop-name')?.textContent
+    || 'Boulangerie Martin';
+  const color = document.getElementById('c-primary')?.value || '#FF4500';
+  document.getElementById('client-banner-shop').textContent = shopName;
+  document.getElementById('client-banner').style.background = color;
+  // reset form
+  ['client-firstname','client-lastname','client-phone'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  goTo('page-client-register');
+}
+
 function joinProgram() {
-  const fn = document.getElementById('client-firstname').value.trim() || 'Client';
+  const fn = document.getElementById('client-firstname').value.trim();
+  const ln = document.getElementById('client-lastname').value.trim();
+  if (!fn) {
+    const inp = document.getElementById('client-firstname');
+    inp.style.borderColor = 'var(--orange)';
+    inp.placeholder = 'Prénom requis';
+    inp.focus();
+    return;
+  }
+  const fullName = fn + (ln ? ' ' + ln : '');
+  const shopName = document.getElementById('client-banner-shop').textContent || 'Boulangerie Martin';
+  const color    = document.getElementById('c-primary')?.value || '#FF4500';
+  const total    = stampsN;
+  const rewards  = {
+    bronze: document.getElementById('r-bronze')?.value || 'Café offert',
+    silver: document.getElementById('r-silver')?.value || 'Viennoiserie offerte',
+    gold:   document.getElementById('r-gold')?.value   || '-10% sur commande',
+  };
+
+  // Personnalise la carte
+  document.getElementById('lcc-greeting').textContent     = 'Bonjour, ' + fn + ' ! 👋';
+  document.getElementById('lcc-card-sub').textContent     = 'Votre carte de fidélité — ' + shopName;
+  document.getElementById('lcc-shop-display').textContent = shopName;
+  document.getElementById('lcc-client-display').textContent = 'Carte de ' + fullName;
+  document.getElementById('lcc-header').style.background  = color;
+
+  // Nouveau client = 1 tampon (première visite)
+  renderClientCard(1, total, rewards);
+
   goTo('page-client-card');
 }
 
@@ -1235,16 +1281,53 @@ function saveSettings() {
 }
 
 /* =====================================================
-   CLIENT CARD — init stamps
+   CLIENT CARD — rendu dynamique
 ===================================================== */
-function initClientCard() {
+function renderClientCard(n, total, rewards) {
   const grid = document.getElementById('client-stamps-grid');
   if (!grid) return;
-  for (let i = 0; i < 10; i++) {
+  grid.innerHTML = '';
+
+  // Grille de tampons
+  for (let i = 0; i < total; i++) {
     const s = document.createElement('div');
-    s.className = 'lcc-stamp ' + (i < 8 ? 'filled' : 'empty');
-    s.textContent = i < 8 ? '✓' : '';
+    s.className = 'lcc-stamp ' + (i < n ? 'filled' : 'empty');
+    s.textContent = i < n ? '✓' : '';
     grid.appendChild(s);
+  }
+
+  // Barre de progression
+  const pct = Math.round((n / total) * 100);
+  const fill = document.getElementById('client-progress');
+  if (fill) fill.style.width = pct + '%';
+
+  // Texte progression
+  const ptxt = document.getElementById('lcc-progress-text');
+  if (ptxt) {
+    const left = total - n;
+    ptxt.textContent = left > 0
+      ? `${n} / ${total} tampons — encore ${left} pour la prochaine récompense`
+      : `${total} / ${total} tampons — Programme complet ! 🎉`;
+  }
+
+  // Niveau et récompense
+  const badge  = document.getElementById('lcc-level-badge');
+  const reward = document.getElementById('lcc-reward-value');
+  const bronzeAt = Math.ceil(total * 0.3);
+  const silverAt = Math.ceil(total * 0.6);
+
+  if (n >= total) {
+    if (badge)  { badge.textContent = '🥇 Or'; badge.style.cssText = 'background:#FFFBE6;color:#B8860B'; }
+    if (reward) reward.textContent = rewards?.gold || '-10% sur commande';
+  } else if (n >= silverAt) {
+    if (badge)  { badge.textContent = '🥈 Argent'; badge.style.cssText = 'background:#F5F5F5;color:#6E6E6E'; }
+    if (reward) reward.textContent = rewards?.silver || 'Viennoiserie offerte';
+  } else if (n >= bronzeAt) {
+    if (badge)  { badge.textContent = '🥉 Bronze'; badge.style.cssText = 'background:#FDF0E6;color:#CD7F32'; }
+    if (reward) reward.textContent = rewards?.bronze || 'Café offert';
+  } else {
+    if (badge)  { badge.textContent = '🥉 Bronze'; badge.style.cssText = 'background:#FDF0E6;color:#CD7F32'; }
+    if (reward) reward.textContent = rewards?.bronze || 'Café offert';
   }
 }
 
@@ -1254,7 +1337,12 @@ function initClientCard() {
 initClients();
 updatePreview();
 updateDashBtn();
-initClientCard();
+// Carte demo par défaut (Sophie Lambert, 8/10)
+renderClientCard(8, 10, {
+  bronze: 'Café offert',
+  silver: 'Viennoiserie offerte',
+  gold:   '-10% sur commande'
+});
 </script>
 </body>
 </html>
