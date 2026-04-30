@@ -1,0 +1,24 @@
+{
+  "name": "monquartier",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "predeploy": "echo Deploying MonQuartier...",
+    "deploy": "gh-pages -d . -s \"{index.html,README.md}\" --nojekyll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karlvinfdl/maquette-MonQuartier.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/karlvinfdl/maquette-MonQuartier/issues"
+  },
+  "homepage": "https://github.com/karlvinfdl/maquette-MonQuartier#readme",
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  }
+}
