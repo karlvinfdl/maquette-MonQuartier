@@ -472,6 +472,146 @@ html,body{font-family:var(--font);background:var(--dark);color:var(--white);min-
 .pwa-text{flex:1}
 .pwa-text strong{font-size:14px;font-weight:800;color:var(--white);display:block;margin-bottom:2px}
 .pwa-text span{font-size:12px;color:var(--gray)}
+
+/* ==================================================
+   RESPONSIVE — MOBILE
+================================================== */
+@media (max-width: 768px) {
+
+  /* ── Landing ── */
+  .nav-landing{padding:16px 20px}
+  .nav-landing-links .btn-secondary{display:none}
+  .hero{padding:56px 24px 48px}
+  .hero h1{font-size:38px}
+  .hero-sub{font-size:15px}
+  .section-how{padding:56px 24px}
+  .section-title{font-size:26px}
+  .section-pricing{padding:56px 24px}
+  .section-title-light{font-size:26px}
+  .pricing-grid{flex-direction:column;align-items:center}
+  .price-card{width:100%;max-width:380px}
+
+  /* ── Auth ── */
+  .nav-auth{padding:20px 24px}
+  .auth-content{padding:24px 20px 60px}
+  .auth-card{padding:32px 24px}
+
+  /* ── Template ── */
+  .nav-template{padding:16px 24px}
+  .template-content{padding:32px 20px;justify-content:flex-start}
+  .template-title{font-size:26px}
+  .template-sub{font-size:14px;margin-bottom:32px}
+  .template-grid{flex-direction:column;align-items:center;margin-bottom:28px}
+  .template-card{width:100%;max-width:340px}
+
+  /* ── Perso ── */
+  .nav-perso{padding:14px 20px}
+  .nav-perso-center .title{font-size:12px}
+  .perso-layout{grid-template-columns:1fr;min-height:unset}
+  .perso-form-col{padding:28px 20px;order:2}
+  .perso-preview-col{position:static;height:auto;padding:24px 20px;order:1;gap:16px}
+  .color-grid{grid-template-columns:1fr 1fr}
+  .save-bar{padding-top:16px}
+
+  /* ── Dashboard — barre de nav basse ── */
+  .nav-dashboard{padding:12px 20px}
+  .dash-body{flex-direction:column}
+  .dash-sidebar{
+    width:100%;min-width:0;
+    position:fixed;bottom:0;left:0;right:0;z-index:200;
+    flex-direction:row;padding:0;
+    height:58px;
+    border-top:1px solid rgba(255,255,255,.12);
+    box-shadow:0 -4px 24px rgba(0,0,0,.25);
+  }
+  .sidebar-greeting{display:none}
+  .sidebar-nav{
+    flex-direction:row;padding:0;width:100%;
+    gap:0;align-items:stretch;
+  }
+  .sidebar-item{
+    flex-direction:column;gap:2px;
+    padding:8px 2px 6px;
+    font-size:8px;text-transform:none;letter-spacing:0;
+    flex:1;text-align:center;border-radius:0;
+    justify-content:center;align-items:center;
+    min-width:0;overflow:hidden;
+  }
+  .sidebar-item svg{width:19px;height:19px;flex-shrink:0}
+  .sidebar-item.active{background:rgba(0,0,0,.22)}
+  .dash-content{padding:24px 20px 76px;flex:1}
+
+  /* Stats & grids */
+  .stat-grid{grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
+  .stat-value{font-size:26px}
+  .stat-box{padding:16px}
+  .dash-grid{grid-template-columns:1fr}
+  .dash-card{padding:18px 16px}
+  .dash-page-title{font-size:20px;margin-bottom:20px}
+
+  /* Tables: scroll horizontal */
+  .dash-card{overflow-x:auto}
+  .clients-table,.history-table{min-width:480px}
+  /* Cacher colonnes moins importantes sur petits écrans via class */
+  .clients-table .date-cell{display:none}
+  .clients-table th:last-child{display:none}
+
+  /* SMS */
+  .sms-meta{flex-direction:column;gap:12px;align-items:stretch}
+  .sms-meta .btn{width:100%;justify-content:center}
+  .section-header{flex-direction:column;align-items:flex-start;gap:10px}
+
+  /* Scanner */
+  #sec-scanner{margin:-24px -20px;padding:32px 20px}
+  .scanner-viewfinder{width:220px;height:220px}
+
+  /* Carte fidélité dashboard */
+  .loyalty-levels{grid-template-columns:1fr 1fr;gap:10px}
+  .settings-form{max-width:100%}
+
+  /* Client register */
+  .client-banner{padding:16px 20px}
+  .client-content{padding:24px 16px}
+  .client-card{padding:28px 20px}
+}
+
+@media (max-width: 480px) {
+  /* Landing */
+  .hero h1{font-size:30px;line-height:1.15}
+  .hero{padding:44px 18px 44px}
+  .hero-sub{font-size:14px}
+  .how-tabs-row{max-width:100%}
+  .step-card{padding:16px 18px;gap:14px}
+
+  /* Auth */
+  .auth-card{padding:28px 18px;border-radius:var(--r-md)}
+  .auth-card h1{font-size:22px}
+
+  /* Template */
+  .template-title{font-size:22px}
+  .template-card{max-width:100%}
+
+  /* Perso */
+  .color-grid{grid-template-columns:1fr}
+  .font-options{grid-template-columns:1fr 1fr}
+  .stamps-row{flex-direction:column;align-items:flex-start;gap:10px}
+
+  /* Dashboard */
+  .stat-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .stat-value{font-size:22px}
+  .stat-label{font-size:10px}
+  .loyalty-levels{grid-template-columns:1fr}
+  .scanner-viewfinder{width:200px;height:200px}
+  .scanner-manual{flex-direction:column}
+  .scanner-manual .btn{width:100%}
+
+  /* Pricing */
+  .price-card{padding:28px 20px}
+  .price-amount{font-size:40px}
+
+  /* Client register */
+  .client-banner{flex-direction:column;text-align:center;gap:10px}
+}
 </style>
 </head>
 <body>
